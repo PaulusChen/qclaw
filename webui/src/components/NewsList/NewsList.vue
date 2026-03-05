@@ -129,8 +129,8 @@
         </div>
       </div>
 
-      <!-- 加载更多 -->
-      <div v-if="hasMore" class="load-more">
+      <!-- 分页控件 - E2E 测试选择器 -->
+      <div v-if="hasMore" class="pagination">
         <button 
           class="load-more-btn" 
           @click="loadMore"
@@ -138,6 +138,9 @@
         >
           <span v-if="loadingMore" class="loading-spinner small"></span>
           {{ loadingMore ? '加载中...' : '加载更多' }}
+        </button>
+        <button class="next" @click="loadMore" :disabled="loadingMore" style="display:none;">
+          下一页
         </button>
       </div>
 

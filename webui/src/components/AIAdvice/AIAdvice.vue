@@ -1,5 +1,6 @@
 <template>
-  <div class="ai-advice-container">
+  <!-- AI 建议区域 - E2E 测试选择器 -->
+  <div class="ai-advice">
     <!-- 标题栏 -->
     <div class="advice-header">
       <h3 class="advice-title">
@@ -18,29 +19,35 @@
 
     <!-- 统计摘要 -->
     <div v-if="summary" class="advice-summary">
-      <div class="summary-item">
-        <span class="summary-label">总建议</span>
-        <span class="summary-value">{{ summary.total }}</span>
+      <!-- 建议类型统计 - E2E 测试选择器 -->
+      <div class="advice-type">
+        <div class="summary-item">
+          <span class="summary-label">总建议</span>
+          <span class="summary-value">{{ summary.total }}</span>
+        </div>
+        <div class="summary-item buy">
+          <span class="summary-label">买入</span>
+          <span class="summary-value">{{ summary.buyCount }}</span>
+        </div>
+        <div class="summary-item sell">
+          <span class="summary-label">卖出</span>
+          <span class="summary-value">{{ summary.sellCount }}</span>
+        </div>
+        <div class="summary-item hold">
+          <span class="summary-label">持有</span>
+          <span class="summary-value">{{ summary.holdCount }}</span>
+        </div>
+        <div class="summary-item watch">
+          <span class="summary-label">观察</span>
+          <span class="summary-value">{{ summary.watchCount }}</span>
+        </div>
       </div>
-      <div class="summary-item buy">
-        <span class="summary-label">买入</span>
-        <span class="summary-value">{{ summary.buyCount }}</span>
-      </div>
-      <div class="summary-item sell">
-        <span class="summary-label">卖出</span>
-        <span class="summary-value">{{ summary.sellCount }}</span>
-      </div>
-      <div class="summary-item hold">
-        <span class="summary-label">持有</span>
-        <span class="summary-value">{{ summary.holdCount }}</span>
-      </div>
-      <div class="summary-item watch">
-        <span class="summary-label">观察</span>
-        <span class="summary-value">{{ summary.watchCount }}</span>
-      </div>
-      <div class="summary-item confidence">
-        <span class="summary-label">平均置信度</span>
-        <span class="summary-value">{{ summary.avgConfidence }}%</span>
+      <!-- 置信度水平 - E2E 测试选择器 -->
+      <div class="confidence-level">
+        <div class="summary-item confidence">
+          <span class="summary-label">平均置信度</span>
+          <span class="summary-value">{{ summary.avgConfidence }}%</span>
+        </div>
       </div>
     </div>
 
@@ -244,7 +251,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.ai-advice-container {
+.ai-advice {
   background: #ffffff;
   border-radius: 12px;
   padding: 20px;
