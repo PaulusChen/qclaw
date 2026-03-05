@@ -1,6 +1,6 @@
 # 已完成任务归档
 
-**最后更新:** 2026-03-05 18:55  
+**最后更新:** 2026-03-05 19:10  
 **维护者:** qclaw-pm
 
 ---
@@ -61,6 +61,28 @@
 - Redux state 管理 (marketSlice)
 - API 服务 (marketApi.ts)
 
+#### CODE-005: 新闻资讯模块 ✅
+- **负责人:** qclaw-coder
+- **完成日期:** 2026-03-05
+- **交付物:** `webui/src/components/NewsList/`, `webui/src/services/newsApi.ts`, `webui/src/types/news.ts`
+
+**成果:**
+- NewsList 组件
+- 新闻列表展示
+- 情感分析标签
+- 分页加载功能
+
+#### CODE-004: AI 建议模块 ✅
+- **负责人:** qclaw-coder
+- **完成日期:** 2026-03-05
+- **交付物:** `webui/src/components/AIAdvice/`, `webui/src/services/adviceApi.ts`, `webui/src/types/advice.ts`
+
+**成果:**
+- AIAdvice 组件
+- OpenClaw API 集成
+- 投资建议展示
+- 置信度显示
+
 #### CODE-001: 项目初始化 ✅
 - **负责人:** qclaw-coder
 - **完成日期:** 2026-03-05
@@ -94,9 +116,9 @@
 |------|---------|--------|--------|
 | 设计 | 2 | 2 | 100% |
 | 审核 | 2 | 2 | 100% |
-| 开发 | 6 | 3 | 50% |
+| 开发 | 6 | 5 | 83% |
 | 测试 | 5 | 1 | 20% |
-| **总计** | **15** | **8** | **53%** |
+| **总计** | **15** | **10** | **67%** |
 
 ---
 

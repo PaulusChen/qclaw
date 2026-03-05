@@ -16,8 +16,6 @@
 
 | 任务 ID | 任务名称 | 依赖 | 备注 |
 |---------|---------|------|------|
-| CODE-004 | AI 建议模块 | CODE-001 | 需要 OpenClaw API |
-| CODE-005 | 新闻资讯模块 | CODE-001 | - |
 | CODE-006 | 后端 API 开发 | CODE-001 | FastAPI |
 
 ---
@@ -26,6 +24,8 @@
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
+| CODE-005 | 新闻资讯模块 | 2026-03-05 | `webui/src/components/NewsList/`, `webui/src/services/newsApi.ts`, `webui/src/types/news.ts` |
+| CODE-004 | AI 建议模块 | 2026-03-05 | `webui/src/components/AIAdvice/`, `webui/src/services/adviceApi.ts`, `webui/src/types/advice.ts` |
 | CODE-003 | 量化指标模块 | 2026-03-05 | `webui/src/components/IndicatorChart/`, `webui/src/services/indicatorApi.ts` |
 | CODE-002 | 大盘指标模块 | 2026-03-05 | `webui/src/components/MarketCard/`, `webui/src/pages/Dashboard/` |
 | CODE-001 | 项目初始化 | 2026-03-05 | `webui/` |
