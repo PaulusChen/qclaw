@@ -228,14 +228,42 @@ git push origin main
 
 ## 🧪 测试
 
+### 后端测试
+
 ```bash
-# 运行单元测试
+# 运行 Python 单元测试
 pytest tests/
 
-# 运行前端测试
-cd webui
-npm test
+# 运行测试并生成覆盖率报告
+pytest --cov=src --cov-report=html
 ```
+
+### 前端测试
+
+```bash
+cd webui
+
+# 安装依赖（首次运行）
+npm install
+
+# 运行所有测试
+npm test
+
+# 运行测试并监听文件变化
+npm test -- --watch
+
+# 运行测试并生成覆盖率报告
+npm run test:coverage
+
+# 打开测试 UI 界面
+npm run test:ui
+```
+
+### 测试覆盖率
+
+目标覆盖率：
+- 后端：>80%
+- 前端：>70%
 
 ---
 
