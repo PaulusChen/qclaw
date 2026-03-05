@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-05T18:11:47.122816",
+  "test_file": "test_performance.py",
+  "配置模块": {
+    "config_load_avg_ms": 0.0,
+    "stock_code_format_avg_ms": 0.0
+  },
+  "工具模块": {
+    "date_parse_avg_ms": 0.122,
+    "returns_calc_avg_ms": 0.122
+  },
+  "移动平均线算法": {
+    "ma_100_avg_ms": 0.182,
+    "ma_1000_avg_ms": 0.182,
+    "ma_5000_avg_ms": 0.227,
+    "ma_calculator_full_avg_ms": 1.513
+  },
+  "数据管理器": {
+    "data_manager_init_avg_ms": 0.049
+  },
+  "内存使用": {
+    "peak_memory_mb": 0.78
+  }
+}
