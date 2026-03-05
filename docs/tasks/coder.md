@@ -1,47 +1,57 @@
 # Coder 任务列表
 
 **负责人:** qclaw-coder  
-**最后更新:** 2026-03-05 19:52  
+**最后更新:** 2026-03-06 00:17  
 **Cron:** 每 5 分钟自动检查
 
 ---
 
-## 🎉 开发阶段全部完成!
+## 🚨 新任务 - 请处理
 
-所有 CODE-* 任务已完成并归档至 `completed.md`
+### CODE-008: 前端服务启动修复
+**优先级:** 高  
+**依赖:** 无  
+**交付物:** 前端服务可在 localhost:3000 正常启动
 
-**当前状态:** 待命 - 等待 PM 创建新任务或测试支持请求
+**问题描述:**
+E2E 测试全部失败 (18 项)，原因是前端服务未启动，localhost:3000 连接被拒绝。
 
-**最近检查:** 2026-03-06 00:12 - 无新开发任务，所有 CODE-* 任务完成，待命状态
+**需要完成:**
+1. 检查前端构建配置 (webui/vite.config.ts)
+2. 确保 `npm run dev` 或 `npm run build && npm run preview` 可以正常启动服务
+3. 验证服务监听在 localhost:3000
+4. 更新启动脚本或 Docker 配置
 
-| 任务 ID | 任务名称 | 状态 | 提交 ID |
-|---------|---------|------|---------|
-| CODE-001 | 项目初始化 | ✅ | `8d4c923` |
-| CODE-002 | 大盘指标模块 | ✅ | `12a92ca` |
-| CODE-003 | 量化指标模块 | ✅ | - |
-| CODE-004 | AI 建议模块 | ✅ | `2282ffd` |
-| CODE-005 | 新闻资讯模块 | ✅ | `2282ffd` |
-| CODE-006 | 后端 API 开发 | ✅ | `0a17c35` |
-| CODE-007 | 单元测试修复 | ✅ | `9f893b0` |
+**测试验证:**
+```bash
+cd webui
+npm run dev
+# 访问 http://localhost:3000 确认页面加载
+```
 
 ---
 
-## 📦 交付成果
+### CODE-009: 补充前端组件单元测试
+**优先级:** 中  
+**依赖:** CODE-008  
+**交付物:** webui/src/components/ 下的组件测试文件
 
-### 前端 (webui/)
-- React 18 + TypeScript + Vite 项目框架
-- MarketCard 组件 - 大盘 K 线图 (MA5/MA10/MA20)
-- IndicatorChart 组件 - 技术指标 (MACD/KDJ/RSI)
-- AIAdvice 组件 - AI 投资建议
-- NewsList 组件 - 财经新闻列表
-- Dashboard 页面 - 大盘指数展示
-- 单元测试套件 - 21 个测试用例全部通过 ✅
+**需要完成:**
+1. 为 MarketCard 组件添加完整单元测试
+2. 为 IndicatorChart 组件添加完整单元测试
+3. 为 AIAdvice 组件添加完整单元测试
+4. 为 NewsList 组件添加完整单元测试
+5. 确保测试覆盖率 >80%
 
-### 后端 (server/)
-- FastAPI 后端服务
-- AKShare 数据集成
-- Redis 缓存
-- RESTful API 接口
+**参考:** 现有测试文件 `webui/src/store/slices/*.test.ts`
+
+---
+
+## 🎉 已完成任务
+
+所有 CODE-001 到 CODE-007 任务已完成并归档至 `completed.md`
+
+**最近检查:** 2026-03-06 00:17 - 有待处理任务 CODE-008, CODE-009
 
 ---
 
