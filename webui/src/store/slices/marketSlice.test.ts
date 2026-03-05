@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import marketReducer, { clearError, loadMarketData } from './marketSlice'
+
+// Mock fetch
+global.fetch = vi.fn()
 
 describe('marketSlice', () => {
   const initialState = {
@@ -8,6 +11,10 @@ describe('marketSlice', () => {
     error: null,
     lastUpdate: 0,
   }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
   it('returns initial state', () => {
     expect(marketReducer(undefined, { type: 'unknown' })).toEqual(initialState)
@@ -43,9 +50,9 @@ describe('marketSlice', () => {
   it('handles loadMarketData.rejected', () => {
     const state = marketReducer(initialState, {
       type: 'market/loadMarketData/rejected',
-      error: { message: 'Failed to load' },
+      error: { message: 'Failed to fetch market data' },
     })
     expect(state.loading).toBe(false)
-    expect(state.error).toBe('Failed to load')
+    expect(state.error).toBe('Failed to fetch market data')
   })
 })

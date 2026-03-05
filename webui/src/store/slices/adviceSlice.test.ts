@@ -36,9 +36,9 @@ describe('adviceSlice', () => {
   it('handles loadDailyAdvice.rejected', () => {
     const state = adviceReducer(initialState, {
       type: 'advice/loadDailyAdvice/rejected',
-      error: { message: 'Failed to load advice' },
+      error: { message: 'Failed to fetch advice' },
     })
     expect(state.loading).toBe(false)
-    expect(state.error).toBe('Failed to load advice')
+    expect(state.error).toBe('Failed to fetch advice')
   })
 })
