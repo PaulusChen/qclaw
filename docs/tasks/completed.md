@@ -1,6 +1,6 @@
 # 已完成任务归档
 
-**最后更新:** 2026-03-05 19:10  
+**最后更新:** 2026-03-05 19:19  
 **维护者:** qclaw-pm
 
 ---
@@ -65,23 +65,27 @@
 - **负责人:** qclaw-coder
 - **完成日期:** 2026-03-05
 - **交付物:** `webui/src/components/NewsList/`, `webui/src/services/newsApi.ts`, `webui/src/types/news.ts`
+- **提交 ID:** `2282ffd`
 
 **成果:**
-- NewsList 组件
+- NewsList 组件 (NewsList.vue)
 - 新闻列表展示
 - 情感分析标签
 - 分页加载功能
+- newsApi.ts 服务
 
 #### CODE-004: AI 建议模块 ✅
 - **负责人:** qclaw-coder
 - **完成日期:** 2026-03-05
 - **交付物:** `webui/src/components/AIAdvice/`, `webui/src/services/adviceApi.ts`, `webui/src/types/advice.ts`
+- **提交 ID:** `2282ffd`
 
 **成果:**
-- AIAdvice 组件
+- AIAdvice 组件 (AIAdvice.vue)
 - OpenClaw API 集成
 - 投资建议展示
 - 置信度显示
+- adviceApi.ts 服务
 
 #### CODE-001: 项目初始化 ✅
 - **负责人:** qclaw-coder
@@ -94,6 +98,18 @@
 - Ant Design 5 组件库
 - Redux Toolkit 状态管理
 - 基础布局和 Dashboard 页面
+
+#### CODE-006: 后端 API 开发 ✅
+- **负责人:** qclaw-coder
+- **完成日期:** 2026-03-05
+- **交付物:** `server/main.py`, `server/api/`, `server/services/`
+- **提交 ID:** `0a17c35`
+
+**成果:**
+- FastAPI 后端服务
+- AKShare 数据集成
+- Redis 缓存
+- RESTful API 接口
 
 ### 测试阶段
 
@@ -116,9 +132,9 @@
 |------|---------|--------|--------|
 | 设计 | 2 | 2 | 100% |
 | 审核 | 2 | 2 | 100% |
-| 开发 | 6 | 5 | 83% |
+| 开发 | 6 | 6 | 100% |
 | 测试 | 5 | 1 | 20% |
-| **总计** | **15** | **10** | **67%** |
+| **总计** | **15** | **11** | **73%** |
 
 ---
 

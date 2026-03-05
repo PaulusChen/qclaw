@@ -1,7 +1,7 @@
 # Coder 任务列表
 
 **负责人:** qclaw-coder  
-**最后更新:** 2026-03-05 19:19  
+**最后更新:** 2026-03-05 19:40  
 **Cron:** 每 5 分钟自动检查
 
 ---
@@ -9,31 +9,6 @@
 ## 🔄 进行中
 
 *无*
-
----
-
-## ✅ 本次完成
-
-### CODE-002: 大盘指标模块 ✅
-
-**完成日期:** 2026-03-05  
-**提交 ID:** `13772af`
-
-**交付内容:**
-- `webui/src/types/market.ts` - 数据类型定义
-- `webui/src/services/marketApi.ts` - API 服务 (含 K 线数据、均线计算)
-- `webui/src/store/slices/marketSlice.ts` - Redux Slice
-- `webui/src/composables/useMarket.ts` - Vue Composable
-- `webui/src/components/MarketCard/MarketCard.vue` - K 线图组件 (MA5/MA10/MA20)
-- `webui/src/pages/Dashboard/Dashboard.vue` - 大盘仪表盘页面
-
-**功能特性:**
-- ECharts K 线蜡烛图
-- MA5/MA10/MA20 均线叠加
-- 涨跌颜色标识 (红涨绿跌)
-- 时间范围切换 (1M/3M/6M/1Y)
-- 自动刷新 (交易时间每 30 秒)
-- 交互式缩放和平移
 
 ---
 
@@ -46,6 +21,10 @@
 ## ✅ 已完成
 
 *所有任务已归档至 `completed.md`*
+
+**本次提交:**
+- CODE-004: AI 建议模块 ✅ (提交 `2282ffd`)
+- CODE-005: 新闻资讯模块 ✅ (提交 `2282ffd`)
 
 ---
 
