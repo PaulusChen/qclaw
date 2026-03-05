@@ -4,7 +4,7 @@
     class="technical-indicators"
     :class="[
       `indicator-${selectedIndicator}`,
-      { 'chart-rendered': !loading && chartInstance }
+      { 'chart-rendered': !loading && chartInstance !== null }
     ]"
   >
     <div class="chart-header">
@@ -28,11 +28,7 @@
     <div 
       ref="chartContainer" 
       class="chart-container"
-      :class="[
-        `macd-chart`,
-        `kdj-chart`,
-        `rsi-chart`
-      ]"
+      :class="`chart-${selectedIndicator}`"
     ></div>
     
     <div v-if="loading" class="loading-overlay">

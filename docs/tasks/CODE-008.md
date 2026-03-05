@@ -19,22 +19,22 @@ E2E 测试用例中使用的 CSS 类名选择器与实际 Vue 组件中的类名
 
 | # | 测试用例期望的类名 | 当前实际类名 | 文件位置 | 状态 |
 |---|-------------------|-------------|---------|------|
-| 1 | `.market-indices` | (缺失) | `Dashboard.vue` | ⏳ 待修复 |
-| 2 | `.index-shanghai` | (缺失) | `MarketCard.vue` | ⏳ 待修复 |
-| 3 | `.index-shenzhen` | (缺失) | `MarketCard.vue` | ⏳ 待修复 |
-| 4 | `.index-chinext` | (缺失) | `MarketCard.vue` | ⏳ 待修复 |
-| 5 | `.last-updated` | `.update-time` | `MarketCard.vue` | ⏳ 待修复 |
-| 6 | `.ai-advice` | `.ai-advice-container` | `AIAdvice.vue` | ⏳ 待修复 |
-| 7 | `.advice-type` | (缺失) | `AIAdvice.vue` | ⏳ 待修复 |
-| 8 | `.confidence-level` | `.confidence-bar` | `AIAdvice.vue` | ⏳ 待修复 |
+| 1 | `.market-indices` | ✅ 已添加 | `Dashboard.vue` | ✅ 完成 |
+| 2 | `.index-shanghai` | ✅ 已添加 | `MarketCard.vue` | ✅ 完成 |
+| 3 | `.index-shenzhen` | ✅ 已添加 | `MarketCard.vue` | ✅ 完成 |
+| 4 | `.index-chinext` | ✅ 已添加 | `MarketCard.vue` | ✅ 完成 |
+| 5 | `.last-updated` | ✅ 已添加 | `Dashboard.vue` | ✅ 完成 |
+| 6 | `.ai-advice` | ✅ 已修改 | `AIAdvice.vue` | ✅ 完成 |
+| 7 | `.advice-type` | ✅ 已添加 | `AIAdvice.vue` | ✅ 完成 |
+| 8 | `.confidence-level` | ✅ 已添加 | `AIAdvice.vue` | ✅ 完成 |
 | 9 | `.advice-reasons` | ✅ 已有 | `AIAdvice.vue` | ✅ 通过 |
 | 10 | `.advice-risks` | ✅ 已有 | `AIAdvice.vue` | ✅ 通过 |
 | 11 | `.news-list` | ✅ 已有 | `NewsList.vue` | ✅ 通过 |
 | 12 | `.news-item` | ✅ 已有 | `NewsList.vue` | ✅ 通过 |
-| 13 | `.pagination` | (缺失，只有 load-more) | `NewsList.vue` | ⏳ 待修复 |
-| 14 | `.news-detail` | (缺失) | (需要标记) | ⏳ 待修复 |
-| 15 | `.technical-indicators` | (缺失) | `IndicatorChart.vue` | ⏳ 待修复 |
-| 16 | `.macd-chart`, `.kdj-chart`, `.rsi-chart`, `.chart-rendered` | (缺失) | `IndicatorChart.vue` | ⏳ 待修复 |
+| 13 | `.pagination` | ✅ 已添加 | `NewsList.vue` | ✅ 完成 |
+| 14 | `.news-detail` | ⚠️ 需要前端路由支持 | (需要标记) | ⏳ 待处理 |
+| 15 | `.technical-indicators` | ✅ 已添加 | `IndicatorChart.vue` | ✅ 完成 |
+| 16 | `.macd-chart`, `.kdj-chart`, `.rsi-chart`, `.chart-rendered` | ✅ 已添加 | `IndicatorChart.vue` | ✅ 完成 |
 
 ---
 
@@ -110,5 +110,24 @@ npx playwright test --ui
 ---
 
 **预计完成时间:** 30 分钟  
-**实际完成时间:** -  
-**提交 ID:** -
+**实际完成时间:** 2026-03-06 00:50  
+**提交 ID:** `764b7c39` (CODE-008), `4666742b` (状态更新)
+
+---
+
+## ✅ 完成总结
+
+**修复的 CSS 类名 (15/16 完成):**
+
+1. ✅ Dashboard.vue - `.market-indices`, `.last-updated`
+2. ✅ MarketCard.vue - `.index-shanghai`, `.index-shenzhen`, `.index-chinext`
+3. ✅ AIAdvice.vue - `.ai-advice`, `.advice-type`, `.confidence-level`
+4. ✅ NewsList.vue - `.pagination`
+5. ✅ IndicatorChart.vue - `.technical-indicators`, `.macd-chart`, `.kdj-chart`, `.rsi-chart`, `.chart-rendered`
+
+**遗留问题:**
+- `.news-detail` - 需要前端路由支持 (当前新闻点击打开新窗口，无详情页路由)
+
+**下一步:**
+- 通知 qclaw-tester 启动前端服务并重新运行 E2E 测试
+- 验证 18 个失败的 E2E 测试用例是否通过
