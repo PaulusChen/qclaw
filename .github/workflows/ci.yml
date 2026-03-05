@@ -1,0 +1,145 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # 后端 Python 测试
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      
+      - name: Run Python tests
+        run: |
+          pytest tests/ --cov=src --cov-report=xml --cov-report=term-missing
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+
+  # 前端 React 测试
+  frontend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: webui/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd webui
+          npm ci
+      
+      - name: Run frontend tests
+        run: |
+          cd webui
+          npm test -- --run --coverage
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./webui/coverage/coverage-final.json
+          flags: frontend
+
+  # Docker 构建测试
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Docker image
+        run: |
+          docker build -t qclaw:latest .
+      
+      - name: Test Docker image
+        run: |
+          docker run --rm qclaw:latest python -m pytest tests/ -v
+
+  # 集成测试（Docker 环境）
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Compose
+        run: |
+          docker-compose up -d
+      
+      - name: Wait for services
+        run: |
+          sleep 30
+      
+      - name: Run integration tests
+        run: |
+          docker-compose exec -T api pytest tests/integration/ -v
+      
+      - name: Stop services
+        run: |
+          docker-compose down
+
+  # 代码质量检查
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      
+      - name: Install linters
+        run: |
+          pip install flake8 black mypy
+      
+      - name: Run flake8
+        run: |
+          flake8 src/ tests/ --max-line-length=100
+      
+      - name: Run black
+        run: |
+          black --check src/ tests/
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install frontend linters
+        run: |
+          cd webui
+          npm ci
+      
+      - name: Run ESLint
+        run: |
+          cd webui
+          npm run lint

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 后端 API 服务
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=sqlite:///app/data/qclaw.db
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - redis
+    command: uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # 前端服务
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # 测试服务（CI 使用）
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TESTING=true
+    depends_on:
+      - redis
+    command: pytest tests/ -v --cov=src --cov-report=xml
+
+volumes:
+  redis_data:
