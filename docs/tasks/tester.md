@@ -23,10 +23,8 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-INT-001 | API 集成测试 | 0% | 开始编写 |
-| TEST-SYS-001 | Docker 系统测试 | 0% | 配置环境 |
-| TEST-INT-002 | 数据库集成测试 | 0% | 依赖已满足，可启动 |
-| TEST-E2E-001 | 端到端流程测试 | 0% | 依赖已满足，可启动 |
+| TEST-SYS-001 | Docker 系统测试 | 60% | 环境未配置，11 个测试跳过 |
+| TEST-E2E-001 | 端到端流程测试 | 0% | 等待前端部署 |
 
 ---
 
@@ -43,6 +41,8 @@ git push origin main
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
+| TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
 | TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
 
 ---
