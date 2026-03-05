@@ -6,6 +6,17 @@
 
 ---
 
+## 📍 核心职责
+
+1. **搭建测试环境** - 启动前端/后端服务，准备测试数据
+2. **执行测试** - 集成测试、E2E 测试、系统测试、性能测试
+3. **发现 Bug** - 分析测试失败原因，定位问题
+4. **通知 Coder 修复** - 发现 Bug 后立即通知 qclaw-coder
+5. **验证修复** - Coder 修复后重新测试确认
+6. **补充测试用例** - 每个 Bug 修复后都要添加对应的测试用例
+
+---
+
 ## 📍 工作流说明
 
 **任务读取位置:** `docs/tasks/tester.md` (本文件)  
@@ -15,6 +26,11 @@
 git add tests/integration/ tests/e2e/ docs/reports/
 git commit -m "[Test] 任务名称"
 git push origin main
+```
+
+### Bug 处理流程
+```
+测试失败 → 分析根因 → 更新 coder.md 创建 bug 任务 → @coder 修复 → 验证关闭 → 补充测试
 ```
 
 ---
