@@ -1,8 +1,8 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-06 00:24  
-**Cron:** 每 5 分钟自动检查
+**最后更新:** 2026-03-06 00:38
+**Cron:** 每小时自动检查 (事件驱动模式)
 
 ---
 
@@ -24,7 +24,7 @@ git push origin main
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
 | TEST-SYS-001 | Docker 系统测试 | 85% | 测试用例完备，Docker 可用。11 项跳过因需完整系统启动 |
-| TEST-E2E-001 | 端到端流程测试 | 15% | ⚠️ 阻塞：前端服务未启动 (localhost:3000) |
+| TEST-E2E-001 | 端到端流程测试 | 90% | ✅ 前端服务已启动，发现 16 个 bug，等待 Coder 修复 |
 
 ---
 
@@ -42,9 +42,10 @@ git push origin main
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
 | TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
-| TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py::TestDatabaseIntegration` ✅ |
 | TEST-UNIT-FIX | 单元测试修复 | 2026-03-05 | `tests/conftest.py`, `tests/test_moving_average.py` ✅ |
 | TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
+| TEST-ENV-001 | 启动前端服务构建测试环境 | 2026-03-06 | 前端服务运行在 localhost:3000 ✅ (已归档) |
 | TEST-RUN-2026-03-05-2145 | 全量测试执行 | 2026-03-05 21:45 | `docs/reports/test-report-2026-03-05-2145.md` ✅ |
 | TEST-RUN-2026-03-05-2228 | 全量测试执行 | 2026-03-05 22:28 | `docs/reports/test-report-2026-03-05-2228.md` ✅ |
 | TEST-RUN-2026-03-05-2308 | 全量测试执行 | 2026-03-05 23:08 | `docs/reports/test-report-2026-03-05-2308.md` ✅ |
@@ -124,7 +125,7 @@ docker-compose logs test
 ### TEST-E2E-001: 端到端流程测试 ⏳
 
 **描述:** 完整用户流程的 E2E 测试  
-**依赖:** CODE-008 前端服务启动  
+**依赖:** CODE-008 前端 bug 修复  
 **技术栈:** Playwright  
 **交付物:** `tests/e2e/`
 
@@ -140,6 +141,19 @@ docker-compose logs test
 cd tests/e2e
 npx playwright test
 ```
+
+### TEST-ENV-001: 启动前端服务构建测试环境 ✅
+
+**描述:** Tester 负责启动前端服务以构建 E2E 测试环境  
+**优先级:** 高  
+**依赖:** 无  
+**交付物:** 前端服务在 localhost:3000 正常运行
+**状态:** ✅ 已完成并归档
+
+**完成内容:**
+1. ✅ 执行 `npm run dev` 启动前端服务
+2. ✅ 验证服务监听在 localhost:3000
+3. ✅ E2E 测试可以正常访问
 
 ### TEST-PERF-001: 性能基准测试 ⏳
 
@@ -239,15 +253,15 @@ docker-compose down
 ## ⚠️ 当前阻塞
 
 **TEST-E2E-001 阻塞中:**
-- 原因：前端服务未启动 (localhost:3000 连接被拒绝)
-- 影响：18 项 E2E 测试用例无法执行
-- 解决：等待 CODE-008 完成后继续测试
+- 原因：等待 Coder 修复 CODE-008 (16 个 UI bug)
+- 影响：18 项 E2E 测试用例无法通过
+- 解决：**Coder 立即修复 CODE-008**
 
 **下一步行动:**
-1. 等待 qclaw-coder 完成 CODE-008 (前端服务启动修复)
-2. 验证前端服务可访问
-3. 重新运行 E2E 测试：`npx playwright test`
-4. 更新测试报告
+1. ✅ 前端服务已启动 (TEST-ENV-001 完成)
+2. ✅ E2E 测试已执行，发现 16 个 bug
+3. ⏳ 等待 Coder 修复 CODE-008
+4. ⏳ 重新运行 E2E 测试验证修复
 
 ---
 
@@ -255,3 +269,4 @@ docker-compose down
 - ✅ 专注于集成测试和系统测试
 - ✅ 使用 Docker 环境进行自动化测试
 - ✅ 单元测试由 Coder 负责
+- ✅ **Tester 负责启动前端服务构建测试环境 (已完成)**
