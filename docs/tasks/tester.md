@@ -43,8 +43,7 @@ git push origin main
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
-| TEST-MVP-001 | MVP 功能测试 | 2026-03-05 | `docs/reports/` |
-| TEST-MVP-002 | MVP 性能测试 | 2026-03-05 | `docs/reports/` |
+| TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
 
 ---
 
