@@ -1,78 +1,89 @@
 """
 Pytest 配置文件
-
-提供共享的测试夹具 (fixtures)
+定义全局 fixtures 和配置
 """
-
 import pytest
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
+import os
+import sys
+
+# 添加 src 到路径
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+
+@pytest.fixture(scope="session")
+def test_config():
+    """测试配置 fixture"""
+    return {
+        "api_url": "http://localhost:8000",
+        "frontend_url": "http://localhost:3000",
+        "redis_url": "redis://localhost:6379",
+        "timeout": 10,
+    }
 
 
 @pytest.fixture
-def sample_price_data():
-    """
-    生成模拟的股票价格数据
-    
-    Returns:
-        包含 OHLCV 数据的 DataFrame
-    """
-    np.random.seed(42)
-    
-    # 生成 100 个交易日的模拟数据
-    dates = pd.date_range(start="2025-01-01", periods=100, freq="D")
-    
-    # 模拟价格走势（随机游走）
-    base_price = 100
-    returns = np.random.normal(0.001, 0.02, 100)
-    close_prices = base_price * np.cumprod(1 + returns)
-    
-    # 生成 OHLC 数据
-    df = pd.DataFrame({
-        "date": dates,
-        "open": close_prices * (1 + np.random.uniform(-0.01, 0.01, 100)),
-        "high": close_prices * (1 + np.random.uniform(0, 0.03, 100)),
-        "low": close_prices * (1 + np.random.uniform(-0.03, 0, 100)),
-        "close": close_prices,
-        "volume": np.random.randint(1000000, 10000000, 100)
-    })
-    
-    df.set_index("date", inplace=True)
-    
-    return df
+def sample_market_data():
+    """示例大盘数据"""
+    return {
+        "shanghai": {
+            "name": "上证指数",
+            "code": "000001",
+            "current": 3024.56,
+            "change": 25.67,
+            "changePercent": 0.85,
+        },
+        "shenzhen": {
+            "name": "深证成指",
+            "code": "399001",
+            "current": 9876.54,
+            "change": 120.32,
+            "changePercent": 1.23,
+        },
+        "chinext": {
+            "name": "创业板指",
+            "code": "399006",
+            "current": 2123.45,
+            "change": 45.67,
+            "changePercent": 2.19,
+        },
+    }
 
 
 @pytest.fixture
-def sample_series():
-    """
-    生成简单的价格序列用于基础测试
-    
-    Returns:
-        pandas Series
-    """
-    return pd.Series([10, 12, 11, 13, 15, 14, 16, 18, 17, 19, 20, 22, 21, 23, 25])
+def sample_technical_data():
+    """示例技术指标数据"""
+    return {
+        "macd": {
+            "dif": 0.5,
+            "dea": 0.3,
+            "macd": 0.2,
+        },
+        "kdj": {
+            "k": 50,
+            "d": 45,
+            "j": 60,
+        },
+        "rsi": {
+            "rsi_6": 55,
+            "rsi_12": 52,
+            "rsi_24": 48,
+        },
+    }
 
 
 @pytest.fixture
-def empty_dataframe():
-    """
-    空 DataFrame 用于边界测试
-    
-    Returns:
-        空的 DataFrame
-    """
-    return pd.DataFrame()
-
-
-@pytest.fixture
-def small_dataframe():
-    """
-    小型 DataFrame 用于边界测试（少于 MA 周期）
-    
-    Returns:
-        小型 DataFrame
-    """
-    return pd.DataFrame({
-        "close": [10, 12, 11]
-    })
+def sample_advice():
+    """示例 AI 建议"""
+    return {
+        "advice": "HOLD",
+        "confidence": "MEDIUM",
+        "reasons": [
+            "大盘震荡整理",
+            "技术指标中性",
+            "成交量萎缩",
+        ],
+        "risks": [
+            "财报季波动风险",
+            "地缘政治不确定性",
+        ],
+    }
