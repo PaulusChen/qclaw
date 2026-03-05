@@ -1,7 +1,7 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-05 21:45  
+**最后更新:** 2026-03-05 23:48  
 **Cron:** 每 5 分钟自动检查
 
 ---
@@ -23,9 +23,8 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-SYS-001 | Docker 系统测试 | 60% | 环境未配置，Docker Compose 未安装 |
-| TEST-E2E-001 | 端到端流程测试 | 0% | 等待前端部署 |
-| TEST-UNIT-FIX | 单元测试修复 | 30% | 需补充 conftest.py fixtures |
+| TEST-SYS-001 | Docker 系统测试 | 85% | 测试用例完备，Docker 可用。11 项跳过因需完整系统启动 |
+| TEST-E2E-001 | 端到端流程测试 | 15% | 测试用例已编写，等待前端服务启动 (localhost:3000) |
 
 ---
 
@@ -44,8 +43,17 @@ git push origin main
 |---------|---------|----------|--------|
 | TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
 | TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-UNIT-FIX | 单元测试修复 | 2026-03-05 | `tests/conftest.py`, `tests/test_moving_average.py` ✅ |
 | TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
 | TEST-RUN-2026-03-05-2145 | 全量测试执行 | 2026-03-05 21:45 | `docs/reports/test-report-2026-03-05-2145.md` ✅ |
+| TEST-RUN-2026-03-05-2228 | 全量测试执行 | 2026-03-05 22:28 | `docs/reports/test-report-2026-03-05-2228.md` ✅ |
+| TEST-RUN-2026-03-05-2308 | 全量测试执行 | 2026-03-05 23:08 | `docs/reports/test-report-2026-03-05-2308.md` ✅ |
+| TEST-RUN-2026-03-05-2315 | 全量测试执行 | 2026-03-05 23:15 | `docs/reports/test-report-2026-03-05-2315.md` ✅ |
+| TEST-RUN-2026-03-05-2323 | 全量测试执行 | 2026-03-05 23:23 | `docs/reports/test-report-2026-03-05-2323.md` ✅ |
+| TEST-RUN-2026-03-05-2328 | 全量测试执行 | 2026-03-05 23:28 | `docs/reports/test-report-2026-03-05-2328.md` ✅ |
+| TEST-RUN-2026-03-05-2333 | 全量测试执行 | 2026-03-05 23:33 | `docs/reports/test-report-2026-03-05-2333.md` ✅ (191 通过，18 失败，11 跳过) |
+| TEST-RUN-2026-03-05-2339 | 全量测试执行 | 2026-03-05 23:39 | `docs/reports/test-report-2026-03-05-2339.md` ✅ (184 单元 + 集成通过，18 E2E 失败，11 跳过) |
+| TEST-RUN-2026-03-05-2348 | 全量测试执行 | 2026-03-05 23:48 | `docs/reports/test-report-2026-03-05-2348.md` ✅ (191 通过，18 E2E 失败，11 跳过) |
 
 ---
 
