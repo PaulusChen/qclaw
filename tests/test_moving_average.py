@@ -277,9 +277,13 @@ class TestEdgeCases:
         result = calculate_ma_multi(small_dataframe, periods=[5, 10])
         
         # 应该能计算，但结果大部分是 NaN
+        # MA5 需要 5 个数据点，所以前 4 个是 NaN，第 5 个有值
+        # MA10 需要 10 个数据点，所以全部是 NaN（只有 5 行数据）
         assert "ma5" in result.columns
         assert "ma10" in result.columns
-        assert pd.isna(result["ma5"]).all()
+        assert pd.isna(result["ma5"]).iloc[:4].all()  # 前 4 个是 NaN
+        assert not pd.isna(result["ma5"]).iloc[4]     # 第 5 个有值
+        assert pd.isna(result["ma10"]).all()          # MA10 全部是 NaN
     
     def test_constant_prices(self):
         """测试恒定价格"""
