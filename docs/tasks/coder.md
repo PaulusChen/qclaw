@@ -14,9 +14,7 @@
 
 ## ⏳ 待开始
 
-| 任务 ID | 任务名称 | 依赖 | 备注 |
-|---------|---------|------|------|
-| CODE-006 | 后端 API 开发 | CODE-001 | FastAPI |
+*无*
 
 ---
 
@@ -24,6 +22,7 @@
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
+| CODE-006 | 后端 API 开发 | 2026-03-05 | `server/main.py`, `server/api/`, `server/services/` |
 | CODE-005 | 新闻资讯模块 | 2026-03-05 | `webui/src/components/NewsList/`, `webui/src/services/newsApi.ts`, `webui/src/types/news.ts` |
 | CODE-004 | AI 建议模块 | 2026-03-05 | `webui/src/components/AIAdvice/`, `webui/src/services/adviceApi.ts`, `webui/src/types/advice.ts` |
 | CODE-003 | 量化指标模块 | 2026-03-05 | `webui/src/components/IndicatorChart/`, `webui/src/services/indicatorApi.ts` |
@@ -81,7 +80,7 @@
 - `webui/src/components/NewsList/`
 - `webui/src/services/newsApi.ts`
 
-### CODE-006: 后端 API 开发 ⏳
+### CODE-006: 后端 API 开发 ✅
 
 **描述:** 实现 FastAPI 后端服务  
 **技术要点:**
@@ -93,6 +92,9 @@
 - `server/main.py`
 - `server/api/`
 - `server/services/`
+
+**完成日期:** 2026-03-05  
+**提交 ID:** `0a17c35`
 
 ### CODE-001: 项目初始化 ✅
 
