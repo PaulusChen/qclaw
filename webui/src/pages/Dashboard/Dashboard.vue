@@ -14,27 +14,35 @@
       </div>
     </div>
     
-    <div class="market-grid">
-      <MarketCard
-        v-for="index in marketIndices"
-        :key="index.name"
-        :index-key="index.name"
-        :symbol="index.symbol"
-        :current-price="getMarketData(index.name)?.current"
-        :change="getMarketData(index.name)?.change"
-        :change-percent="getMarketData(index.name)?.changePercent"
-        :open="getMarketData(index.name)?.open"
-        :high="getMarketData(index.name)?.high"
-        :low="getMarketData(index.name)?.low"
-        :previous-close="getMarketData(index.name)?.previousClose"
-        :last-update="lastUpdate"
-      />
+    <!-- 大盘指标区域 - E2E 测试选择器 -->
+    <div class="market-indices">
+      <div class="market-grid">
+        <MarketCard
+          v-for="index in marketIndices"
+          :key="index.name"
+          :index-key="index.name"
+          :symbol="index.symbol"
+          :current-price="getMarketData(index.name)?.current"
+          :change="getMarketData(index.name)?.change"
+          :change-percent="getMarketData(index.name)?.changePercent"
+          :open="getMarketData(index.name)?.open"
+          :high="getMarketData(index.name)?.high"
+          :low="getMarketData(index.name)?.low"
+          :previous-close="getMarketData(index.name)?.previousClose"
+          :last-update="lastUpdate"
+        />
+      </div>
     </div>
     
     <div v-if="error" class="error-message">
       <span>⚠️</span>
       {{ error }}
       <button @click="refreshAll" class="retry-btn">重试</button>
+    </div>
+    
+    <!-- 最后更新时间 - E2E 测试选择器 -->
+    <div v-if="lastUpdate" class="last-updated">
+      最后更新：{{ formatTime(lastUpdate) }}
     </div>
     
     <div class="dashboard-footer">
@@ -63,6 +71,17 @@ const getMarketData = (indexKey: string): MarketIndex | undefined => {
 // 刷新所有数据
 const refreshAll = async () => {
   await loadMarketData()
+}
+
+// 格式化时间
+const formatTime = (timestamp: number): string => {
+  const date = new Date(timestamp)
+  return date.toLocaleString('zh-CN', { 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit', 
+    minute: '2-digit' 
+  })
 }
 
 // 自动刷新定时器

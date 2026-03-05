@@ -1,5 +1,12 @@
 <template>
-  <div class="market-card">
+  <!-- 添加动态索引类名用于 E2E 测试 -->
+  <div 
+    class="market-card" 
+    :class="[
+      `index-${indexKey}`,
+      { 'price-up': change > 0, 'price-down': change < 0, 'price-flat': change === 0 }
+    ]"
+  >
     <div class="card-header">
       <div class="index-info">
         <h3 class="index-name">{{ indexName }}</h3>

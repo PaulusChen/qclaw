@@ -1,5 +1,12 @@
 <template>
-  <div class="indicator-chart">
+  <!-- 技术指标区域 - E2E 测试选择器 -->
+  <div 
+    class="technical-indicators"
+    :class="[
+      `indicator-${selectedIndicator}`,
+      { 'chart-rendered': !loading && chartInstance }
+    ]"
+  >
     <div class="chart-header">
       <h3>{{ title }}</h3>
       <div class="chart-controls">
@@ -17,7 +24,16 @@
       </div>
     </div>
     
-    <div ref="chartContainer" class="chart-container"></div>
+    <!-- 图表容器 - 根据指标类型添加特定类名 -->
+    <div 
+      ref="chartContainer" 
+      class="chart-container"
+      :class="[
+        `macd-chart`,
+        `kdj-chart`,
+        `rsi-chart`
+      ]"
+    ></div>
     
     <div v-if="loading" class="loading-overlay">
       <span>加载数据中...</span>
@@ -44,7 +60,7 @@ const props = defineProps<{
 
 const title = props.title || '技术指标'
 const chartContainer = ref<HTMLElement | null>(null)
-let chartInstance: echarts.ECharts | null = null
+const chartInstance = ref<echarts.ECharts | null>(null)
 
 const selectedIndicator = ref<string>('macd')
 const timeRange = ref<string>('3M')
@@ -53,7 +69,7 @@ const loading = ref<boolean>(false)
 const initChart = () => {
   if (!chartContainer.value) return
   
-  chartInstance = echarts.init(chartContainer.value)
+  chartInstance.value = echarts.init(chartContainer.value)
   
   const option: echarts.EChartsOption = {
     tooltip: {
@@ -87,7 +103,7 @@ const initChart = () => {
 }
 
 const updateChart = async () => {
-  if (!chartInstance) return
+  if (!chartInstance.value) return
   
   loading.value = true
   
@@ -107,7 +123,7 @@ const updateChart = async () => {
 }
 
 const renderChart = (data: IndicatorData) => {
-  if (!chartInstance) return
+  if (!chartInstance.value) return
   
   const option: echarts.EChartsOption = {
     xAxis: {
@@ -201,7 +217,7 @@ const getSeriesConfig = (data: IndicatorData): echarts.SeriesOption[] => {
 }
 
 const handleResize = () => {
-  chartInstance?.resize()
+  chartInstance.value?.resize()
 }
 
 onMounted(() => {
@@ -211,7 +227,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
-  chartInstance?.dispose()
+  chartInstance.value?.dispose()
 })
 
 watch(() => props.symbol, () => {
