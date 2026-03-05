@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <div class="dashboard-header">
-      <h1 class="dashboard-title">大盘指数</h1>
+      <h1 class="dashboard-title">🤖 QCLaw - 大盘指数</h1>
       <div class="dashboard-actions">
         <button 
           class="refresh-btn" 
@@ -14,35 +14,32 @@
       </div>
     </div>
     
-    <!-- 大盘指标区域 - E2E 测试选择器 -->
-    <div class="market-indices">
-      <div class="market-grid">
-        <MarketCard
-          v-for="index in marketIndices"
-          :key="index.name"
-          :index-key="index.name"
-          :symbol="index.symbol"
-          :current-price="getMarketData(index.name)?.current"
-          :change="getMarketData(index.name)?.change"
-          :change-percent="getMarketData(index.name)?.changePercent"
-          :open="getMarketData(index.name)?.open"
-          :high="getMarketData(index.name)?.high"
-          :low="getMarketData(index.name)?.low"
-          :previous-close="getMarketData(index.name)?.previousClose"
-          :last-update="lastUpdate"
-        />
-      </div>
+    <div class="market-indices market-grid">
+      <MarketCard
+        v-for="index in marketIndices"
+        :key="index.name"
+        :index-key="index.name"
+        :symbol="index.symbol"
+        :current-price="getMarketData(index.name)?.current"
+        :change="getMarketData(index.name)?.change"
+        :change-percent="getMarketData(index.name)?.changePercent"
+        :open="getMarketData(index.name)?.open"
+        :high="getMarketData(index.name)?.high"
+        :low="getMarketData(index.name)?.low"
+        :previous-close="getMarketData(index.name)?.previousClose"
+        :last-update="lastUpdate"
+        :class="getIndexClass(index.name)"
+      />
+    </div>
+    
+    <div class="last-updated" v-if="lastUpdate">
+      <span>🕐</span> 最后更新：{{ formatTime(lastUpdate) }}
     </div>
     
     <div v-if="error" class="error-message">
       <span>⚠️</span>
       {{ error }}
       <button @click="refreshAll" class="retry-btn">重试</button>
-    </div>
-    
-    <!-- 最后更新时间 - E2E 测试选择器 -->
-    <div v-if="lastUpdate" class="last-updated">
-      最后更新：{{ formatTime(lastUpdate) }}
     </div>
     
     <div class="dashboard-footer">
@@ -68,20 +65,29 @@ const getMarketData = (indexKey: string): MarketIndex | undefined => {
   return getMarketIndex(indexKey)
 }
 
-// 刷新所有数据
-const refreshAll = async () => {
-  await loadMarketData()
+// 获取指数对应的 CSS 类
+const getIndexClass = (indexKey: string): string => {
+  const classMap: Record<string, string> = {
+    'shanghai': 'index-shanghai',
+    'shenzhen': 'index-shenzhen',
+    'chinext': 'index-chinext'
+  }
+  return classMap[indexKey] || ''
 }
 
 // 格式化时间
 const formatTime = (timestamp: number): string => {
   const date = new Date(timestamp)
-  return date.toLocaleString('zh-CN', { 
-    month: 'short', 
-    day: 'numeric',
+  return date.toLocaleTimeString('zh-CN', { 
     hour: '2-digit', 
-    minute: '2-digit' 
+    minute: '2-digit',
+    second: '2-digit'
   })
+}
+
+// 刷新所有数据
+const refreshAll = async () => {
+  await loadMarketData()
 }
 
 // 自动刷新定时器
@@ -189,6 +195,28 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 24px;
+  margin-bottom: 24px;
+}
+
+.market-indices {
+  /* 确保市场指数区域可见 */
+}
+
+.index-shanghai,
+.index-shenzhen,
+.index-chinext {
+  /* 指数特定样式 */
+}
+
+.last-updated {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #6b7280;
   margin-bottom: 24px;
 }
 

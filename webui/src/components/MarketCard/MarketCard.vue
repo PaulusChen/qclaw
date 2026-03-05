@@ -1,12 +1,5 @@
 <template>
-  <!-- 添加动态索引类名用于 E2E 测试 -->
-  <div 
-    class="market-card" 
-    :class="[
-      `index-${indexKey}`,
-      { 'price-up': change > 0, 'price-down': change < 0, 'price-flat': change === 0 }
-    ]"
-  >
+  <div class="market-card" :class="indexClass">
     <div class="card-header">
       <div class="index-info">
         <h3 class="index-name">{{ indexName }}</h3>
@@ -95,6 +88,8 @@ interface MarketCardProps {
   previousClose?: number
   /** 最后更新时间 */
   lastUpdate?: number
+  /** 指数 CSS 类 */
+  indexClass?: string
 }
 
 const props = withDefaults(defineProps<MarketCardProps>(), {
@@ -107,6 +102,7 @@ const props = withDefaults(defineProps<MarketCardProps>(), {
   low: 0,
   previousClose: 0,
   lastUpdate: 0,
+  indexClass: '',
 })
 
 const indexName = computed(() => INDEX_LABELS[props.indexKey] || props.indexKey)
