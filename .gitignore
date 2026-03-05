@@ -1,0 +1,123 @@
+# ========== OpenClaw 工作空间 (禁止提交) ==========
+# 这些文件应该在 ~/.openclaw/workspace-qclaw/ 而不是项目代码目录
+AGENTS.md
+BOOTSTRAP.md
+SOUL.md
+USER.md
+IDENTITY.md
+TOOLS.md
+HEARTBEAT.md
+COMMIT_HISTORY.md
+memory/
+.openclaw/
+
+# ========== Python ==========
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+venv/
+env/
+ENV/
+.venv
+.python-version
+
+# ========== IDE ==========
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ========== Jupyter ==========
+.ipynb_checkpoints
+
+# ========== Testing ==========
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ========== Logs & Data ==========
+logs/
+*.log
+data/
+*.csv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+!data/.gitkeep
+.cache/
+.qlib/
+*.cache
+*.tmp
+*.temp
+
+# ========== Environment ==========
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ========== Docker ==========
+docker-compose.override.yml
+.docker/
+
+# ========== OS ==========
+.DS_Store
+Thumbs.db
+
+# ========== Project Specific ==========
+*.model
+*.weights
+*.pth
+*.onnx
+reports/
+output/
+results/
+backtest_results/
+
+# ========== Secrets ==========
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+# ========== Temporary ==========
+tmp/
+temp/
+*.bak
+*.backup
