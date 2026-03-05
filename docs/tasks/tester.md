@@ -25,7 +25,6 @@ git push origin main
 |---------|---------|------|------|
 | TEST-SYS-001 | Docker 系统测试 | 75% | 测试用例完备，需启动服务执行完整测试 |
 | TEST-E2E-001 | 端到端流程测试 | 10% | 测试用例已编写，需安装 Playwright |
-| TEST-UNIT-FIX | 单元测试修复 | 95% | conftest.py fixtures 已补充，1 个测试已修复 |
 
 ---
 
@@ -44,6 +43,7 @@ git push origin main
 |---------|---------|----------|--------|
 | TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
 | TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-UNIT-FIX | 单元测试修复 | 2026-03-05 | `tests/conftest.py`, `tests/test_moving_average.py` ✅ |
 | TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
 | TEST-RUN-2026-03-05-2145 | 全量测试执行 | 2026-03-05 21:45 | `docs/reports/test-report-2026-03-05-2145.md` ✅ |
 | TEST-RUN-2026-03-05-2228 | 全量测试执行 | 2026-03-05 22:28 | `docs/reports/test-report-2026-03-05-2228.md` ✅ |
