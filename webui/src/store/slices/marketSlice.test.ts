@@ -28,7 +28,7 @@ describe('marketSlice', () => {
   })
 
   it('handles loadMarketData.pending', () => {
-    const state = marketReducer(initialState, { type: 'market/loadMarketData/pending' })
+    const state = marketReducer(initialState, { type: 'market/loadIndices/pending' })
     expect(state.loading).toBe(true)
     expect(state.error).toBeNull()
   })
@@ -40,7 +40,7 @@ describe('marketSlice', () => {
       chinext: { name: '创业板指', current: 2000 },
     }
     const state = marketReducer(initialState, {
-      type: 'market/loadMarketData/fulfilled',
+      type: 'market/loadIndices/fulfilled',
       payload: mockData,
     })
     expect(state.loading).toBe(false)
@@ -50,7 +50,7 @@ describe('marketSlice', () => {
 
   it('handles loadMarketData.rejected', () => {
     const state = marketReducer(initialState, {
-      type: 'market/loadMarketData/rejected',
+      type: 'market/loadIndices/rejected',
       error: { message: 'Failed to fetch market data' },
     })
     expect(state.loading).toBe(false)

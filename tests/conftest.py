@@ -87,3 +87,59 @@ def sample_advice():
             "地缘政治不确定性",
         ],
     }
+
+
+@pytest.fixture
+def sample_price_data():
+    """示例价格数据 fixture - TEST-UNIT-FIX"""
+    import pandas as pd
+    import numpy as np
+    
+    np.random.seed(42)
+    
+    dates = pd.date_range('2026-01-01', periods=100, freq='D')
+    return pd.DataFrame({
+        'date': dates,
+        'open': np.random.uniform(3000, 3100, 100),
+        'high': np.random.uniform(3100, 3200, 100),
+        'low': np.random.uniform(2900, 3000, 100),
+        'close': np.random.uniform(3000, 3150, 100),
+        'volume': np.random.randint(1000000, 5000000, 100),
+    })
+
+
+@pytest.fixture
+def sample_series():
+    """示例 Series fixture - TEST-UNIT-FIX
+    
+    使用固定的测试数据以便测试可重复性
+    前几个值设计为便于手动计算：[10, 12, 11, 13, 15, ...]
+    """
+    import pandas as pd
+    import numpy as np
+    
+    np.random.seed(42)
+    
+    fixed_values = [10, 12, 11, 13, 15, 14, 16, 18, 17, 19]
+    random_values = np.random.uniform(3000, 3100, 90)
+    
+    all_values = fixed_values + list(random_values)
+    
+    return pd.Series(
+        all_values,
+        name='close',
+        index=pd.date_range('2026-01-01', periods=100, freq='D')
+    )
+
+
+@pytest.fixture
+def small_dataframe():
+    """小型 DataFrame fixture - TEST-UNIT-FIX"""
+    import pandas as pd
+    import numpy as np
+    
+    dates = pd.date_range('2026-01-01', periods=5, freq='D')
+    return pd.DataFrame({
+        'date': dates,
+        'close': [100.0, 102.0, 101.5, 103.0, 102.5],
+    })

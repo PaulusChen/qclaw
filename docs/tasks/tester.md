@@ -1,7 +1,7 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-05 20:10  
+**最后更新:** 2026-03-05 21:45  
 **Cron:** 每 5 分钟自动检查
 
 ---
@@ -23,8 +23,9 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-SYS-001 | Docker 系统测试 | 60% | 环境未配置，11 个测试跳过 |
+| TEST-SYS-001 | Docker 系统测试 | 60% | 环境未配置，Docker Compose 未安装 |
 | TEST-E2E-001 | 端到端流程测试 | 0% | 等待前端部署 |
+| TEST-UNIT-FIX | 单元测试修复 | 30% | 需补充 conftest.py fixtures |
 
 ---
 
@@ -44,6 +45,7 @@ git push origin main
 | TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
 | TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
 | TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
+| TEST-RUN-2026-03-05-2145 | 全量测试执行 | 2026-03-05 21:45 | `docs/reports/test-report-2026-03-05-2145.md` ✅ |
 
 ---
 

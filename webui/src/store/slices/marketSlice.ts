@@ -24,6 +24,7 @@ interface IndexData {
 
 interface MarketState {
   indices: Record<string, IndexData>
+  klineData: Record<string, any>
   loading: boolean
   error: string | null
   lastUpdate: number
@@ -31,6 +32,7 @@ interface MarketState {
 
 const initialState: MarketState = {
   indices: {},
+  klineData: {},
   loading: false,
   error: null,
   lastUpdate: 0,

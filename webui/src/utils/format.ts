@@ -12,7 +12,8 @@ export const formatNumber = (num: number, precision: number = 2): string => {
  * @param num 百分比数值
  */
 export const formatPercent = (num: number): string => {
-  return `${num >= 0 ? '+' : ''}${num.toFixed(2)}%`
+  if (num === 0) return '0.00%'
+  return `${num > 0 ? '+' : ''}${num.toFixed(2)}%`
 }
 
 /**

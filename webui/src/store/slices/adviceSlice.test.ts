@@ -13,7 +13,7 @@ describe('adviceSlice', () => {
   })
 
   it('handles loadDailyAdvice.pending', () => {
-    const state = adviceReducer(initialState, { type: 'advice/loadDailyAdvice/pending' })
+    const state = adviceReducer(initialState, { type: 'advice/loadDaily/pending' })
     expect(state.loading).toBe(true)
   })
 
@@ -26,7 +26,7 @@ describe('adviceSlice', () => {
       updatedAt: '2026-03-05T10:00:00Z',
     }
     const state = adviceReducer(initialState, {
-      type: 'advice/loadDailyAdvice/fulfilled',
+      type: 'advice/loadDaily/fulfilled',
       payload: mockAdvice,
     })
     expect(state.loading).toBe(false)
@@ -35,7 +35,7 @@ describe('adviceSlice', () => {
 
   it('handles loadDailyAdvice.rejected', () => {
     const state = adviceReducer(initialState, {
-      type: 'advice/loadDailyAdvice/rejected',
+      type: 'advice/loadDaily/rejected',
       error: { message: 'Failed to fetch advice' },
     })
     expect(state.loading).toBe(false)
