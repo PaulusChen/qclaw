@@ -4,6 +4,7 @@ import marketReducer, { clearError, loadMarketData } from './marketSlice'
 describe('marketSlice', () => {
   const initialState = {
     indices: {},
+    klineData: {},
     loading: false,
     error: null,
     lastUpdate: 0,

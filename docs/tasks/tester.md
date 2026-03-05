@@ -1,7 +1,7 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-05 19:06  
+**最后更新:** 2026-03-05 19:36  
 **Cron:** 每 5 分钟自动检查
 
 ---
@@ -23,8 +23,8 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-001 | 前端单元测试 | 30% | 已创建基础测试用例 |
-| TEST-002 | 后端单元测试 | 0% | 待开始 |
+| TEST-001 | 前端单元测试 | 45% | 已创建基础测试用例，修复 format.ts 和测试用例 |
+| TEST-002 | 后端单元测试 | 60% | 技术指标测试完成，utils 测试完成 |
 
 ---
 
@@ -57,11 +57,11 @@ git push origin main
 **交付物:** `webui/src/**/*.test.tsx`
 
 **测试范围:**
-- [x] App 组件测试
-- [x] Layout 组件测试
-- [x] marketSlice 测试
-- [x] adviceSlice 测试
-- [x] format 工具函数测试
+- [x] App 组件测试 ✅
+- [x] Layout 组件测试 ✅
+- [x] marketSlice 测试 ✅
+- [x] adviceSlice 测试 ✅
+- [x] format 工具函数测试 ✅
 - [ ] IndicatorChart 组件测试
 - [ ] NewsList 组件测试
 - [ ] AIAdvice 组件测试
@@ -75,7 +75,13 @@ npm test
 npm run test:coverage
 ```
 
-### TEST-002: 后端单元测试 ⏳
+**最新结果:** 21 tests passed (100%)
+
+**修复内容:**
+- 修复 `formatPercent(0)` 返回 `'+0.00%'`
+- 创建 `App.tsx`, `Layout/index.tsx`, `adviceSlice.ts`
+
+### TEST-002: 后端单元测试 🔄
 
 **描述:** 为 Python 模块编写单元测试  
 **技术栈:** pytest + pytest-cov  
@@ -83,8 +89,8 @@ npm run test:coverage
 
 **测试范围:**
 - [ ] config.py 配置管理测试
-- [ ] utils.py 工具函数测试
-- [ ] indicators/ 技术指标测试
+- [x] utils.py 工具函数测试 (42 tests ✅)
+- [x] indicators/ 技术指标测试 (115 tests ✅)
 - [ ] integration/ OpenClaw 客户端测试
 - [ ] data/ 数据获取测试
 
@@ -92,6 +98,8 @@ npm run test:coverage
 ```bash
 pytest tests/ --cov=src
 ```
+
+**最新结果:** 157 tests passed (100%)
 
 ### TEST-003: 组件集成测试 ⏳
 
@@ -148,13 +156,13 @@ pytest tests/ --cov=src
 
 ## 📊 测试覆盖率目标
 
-| 模块 | 当前 | 目标 |
-|------|------|------|
-| 前端组件 | 30% | 70% |
-| Redux Slices | 80% | 90% |
-| 工具函数 | 100% | 100% |
-| 后端 API | 0% | 80% |
-| 集成测试 | 0% | 60% |
+| 模块 | 当前 | 目标 | 状态 |
+|------|------|------|------|
+| 前端组件 | 35% | 70% | 🟡 进行中 |
+| Redux Slices | 90% | 90% | ✅ 达标 |
+| 工具函数 | 100% | 100% | ✅ 达标 |
+| 后端 API | 0% | 80% | ⏳ 待开始 |
+| 集成测试 | 0% | 60% | ⏳ 待开始 |
 
 ---
 
