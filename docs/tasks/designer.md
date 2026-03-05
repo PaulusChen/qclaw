@@ -22,8 +22,8 @@
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
-| DESIGN-001 | UI/UX 设计稿 | 2026-03-05 | `docs/design/ui-design.md` |
-| DESIGN-002 | 技术方案设计 | 2026-03-05 | `docs/design/technical-design.md` |
+| DESIGN-001 | UI/UX 设计稿 | 2026-03-05 | `docs/design/ui-design.md` ✅ |
+| DESIGN-002 | 技术方案设计 | 2026-03-05 | `docs/design/technical-design.md` ✅ |
 
 ---
 
