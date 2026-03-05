@@ -8,7 +8,32 @@
 
 ## 🚨 新任务 - 请处理
 
-### CODE-008: 修复 E2E 测试发现的 UI/交互 bug
+### CODE-009: 修复 E2E 测试发现的新 UI Bug (第二轮)
+**优先级:** 🔥 **紧急**  
+**依赖:** TEST-E2E-001 第二轮验证 (2026-03-06 02:17)  
+**交付物:** 修复剩余 10 项 E2E 测试失败  
+**状态:** ⏳ 待开始
+
+**问题描述:**
+CODE-008 修复后重新运行 E2E 测试，仍有 10 项失败。主要问题是 CSS 类名仍不匹配和测试用例缺陷。
+
+**需要修复的 Bug:**
+1. `.last-updated` 元素不存在 - Dashboard.vue 缺少最后更新时间显示
+2. `.advice-type`, `.advice-reasons`, `.advice-risks` 不存在 - AIAdvice.vue 类名不完整
+3. `.news-item` 不存在 - NewsList.vue 新闻列表项类名缺失
+4. 新闻分页 URL 未变化 - NewsList.vue 分页功能未实现
+5. `.error-message` 不存在 - 错误提示组件类名缺失
+6. `.chart-rendered` 匹配 3 个元素 - IndicatorChart.vue 选择器需要更精确
+7. `test_404_page` API 错误 - 测试用例需修复 (使用 `to_have_url` 替代 `to_have_status`)
+
+**交付要求:**
+- 修复所有 CSS 类名问题
+- 确保 E2E 测试选择器能正确匹配
+- 提交后通知 Tester 重新验证
+
+---
+
+### CODE-008: 修复 E2E 测试发现的 UI/交互 bug ✅
 **优先级:** 高  
 **依赖:** TEST-E2E-001 执行完成后产生的测试报告  
 **交付物:** 修复所有 E2E 测试发现的 UI/交互 bug
