@@ -1,7 +1,7 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-05 19:13  
+**最后更新:** 2026-03-05 20:10  
 **Cron:** 每 5 分钟自动检查
 
 ---
@@ -23,8 +23,8 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-INT-001 | API 集成测试 | 0% | 开始编写 |
-| TEST-SYS-001 | Docker 系统测试 | 0% | 配置环境 |
+| TEST-SYS-001 | Docker 系统测试 | 60% | 环境未配置，11 个测试跳过 |
+| TEST-E2E-001 | 端到端流程测试 | 0% | 等待前端部署 |
 
 ---
 
@@ -32,8 +32,6 @@ git push origin main
 
 | 任务 ID | 任务名称 | 依赖 | 优先级 |
 |---------|---------|------|--------|
-| TEST-INT-002 | 数据库集成测试 | CODE-006 | 高 |
-| TEST-E2E-001 | 端到端流程测试 | CODE-006 | 高 |
 | TEST-PERF-001 | 性能基准测试 | CODE-006 | 中 |
 | TEST-LOAD-001 | 负载压力测试 | CODE-006 | 低 |
 
@@ -43,8 +41,9 @@ git push origin main
 
 | 任务 ID | 任务名称 | 完成日期 | 交付物 |
 |---------|---------|----------|--------|
-| TEST-MVP-001 | MVP 功能测试 | 2026-03-05 | `docs/reports/` |
-| TEST-MVP-002 | MVP 性能测试 | 2026-03-05 | `docs/reports/` |
+| TEST-INT-001 | API 集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-INT-002 | 数据库集成测试 | 2026-03-05 | `tests/integration/test_api_integration.py` ✅ |
+| TEST-MVP | MVP 功能测试和性能测试 | 2026-03-05 | `docs/test/test_report_2026-03-05.md` ✅ (已归档) |
 
 ---
 
@@ -153,7 +152,7 @@ npx playwright test
 - [ ] 100 并发用户
 - [ ] 500 并发用户
 - [ ] 1000 并发用户
-- [ ] 长时间运行测试（24h）
+- [ ] 长时间运行测试 (24h)
 
 ---
 

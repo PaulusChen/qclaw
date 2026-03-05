@@ -7,6 +7,7 @@ global.fetch = vi.fn()
 describe('marketSlice', () => {
   const initialState = {
     indices: {},
+    klineData: {},
     loading: false,
     error: null,
     lastUpdate: 0,

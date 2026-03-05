@@ -1,17 +1,5 @@
 import { describe, it, expect } from 'vitest'
-
-// 测试用的格式化函数
-const formatNumber = (num: number, precision: number = 2): string => {
-  return num.toFixed(precision)
-}
-
-const formatPercent = (num: number): string => {
-  return `${num > 0 ? '+' : ''}${num.toFixed(2)}%`
-}
-
-const formatChange = (change: number): string => {
-  return change > 0 ? `+${change}` : `${change}`
-}
+import { formatNumber, formatPercent, formatChange } from './format'
 
 describe('format utilities', () => {
   describe('formatNumber', () => {
