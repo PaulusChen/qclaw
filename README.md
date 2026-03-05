@@ -228,7 +228,16 @@ git push origin main
 
 ## 🧪 测试
 
-### 后端测试
+### 测试职责分工
+
+| 测试类型 | 负责角色 | 说明 |
+|---------|---------|------|
+| **单元测试** | Coder | 测试自己的代码 |
+| **集成测试** | Tester | 模块间集成测试 |
+| **系统测试** | Tester | Docker 环境自动化测试 |
+| **E2E 测试** | Tester | 端到端流程测试 |
+
+### 后端测试（Coder）
 
 ```bash
 # 运行 Python 单元测试
@@ -238,7 +247,7 @@ pytest tests/
 pytest --cov=src --cov-report=html
 ```
 
-### 前端测试
+### 前端测试（Coder）
 
 ```bash
 cd webui
@@ -259,17 +268,69 @@ npm run test:coverage
 npm run test:ui
 ```
 
+### 集成测试（Tester）
+
+```bash
+# 运行 API 集成测试
+pytest tests/integration/ -v
+
+# 运行数据库集成测试
+pytest tests/integration/test_database.py -v
+```
+
+### 系统测试（Tester）
+
+```bash
+# 使用 Docker 运行系统测试
+./scripts/test-system.sh
+
+# 或手动运行
+docker-compose up -d
+docker-compose exec -T api pytest tests/system/ -v
+docker-compose down
+```
+
 ### 测试覆盖率
 
 目标覆盖率：
-- 后端：>80%
-- 前端：>70%
+- **单元测试（Coder）**: >80%
+- **集成测试（Tester）**: >60%
+- **系统测试（Tester）**: 关键服务 100%
 
 ---
 
-## 📄 License
+## 🔄 CI/CD
 
-本项目采用 [MIT License](LICENSE) 开源协议。
+项目配置了完整的 CI/CD 流程：
+
+### GitHub Actions
+
+推送代码后自动运行：
+- ✅ 后端 Python 测试
+- ✅ 前端 React 测试
+- ✅ Docker 构建测试
+- ✅ 集成测试
+- ✅ 代码质量检查
+
+### 配置文件
+
+- `.github/workflows/ci.yml` - CI/CD 流程定义
+- `Dockerfile` - 后端 Docker 镜像
+- `Dockerfile.frontend` - 前端 Docker 镜像
+- `docker-compose.yml` - 多服务编排
+- `scripts/test-system.sh` - 系统测试脚本
+
+### 本地运行 CI
+
+```bash
+# 运行完整测试流程
+./scripts/test-system.sh
+
+# 或分步运行
+docker-compose up -d
+docker-compose exec -T api pytest tests/ -v
+docker-compose down
+```
 
 ---
 
