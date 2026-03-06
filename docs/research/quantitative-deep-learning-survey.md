@@ -242,7 +242,82 @@ mixed_precision: true
 
 ---
 
-**调研完成时间:** 2026-03-06 11:00  
+---
+
+## 8. 补充调研 (排除 qclaw 项目)
+
+### 8.1 特征工程最佳实践
+
+**搜索查询:** `feature engineering technical indicators stock prediction deep learning -qclaw`
+
+**核心发现:**
+
+1. **技术指标作为特征:**
+   - RSI、MACD 等是特征工程的标准形式
+   - 将原始 OHLC 数据转换为多个工程化特征列
+   - 技术指标 + 深度学习 = 更好的预测性能
+
+2. **频域特征:**
+   - 傅里叶变换将股价数据映射到频域
+   - ATFNet 模型证明频域 + 时序特征结合有效
+   - Scientific Reports 2025 论文支持该方法
+
+3. **特征选择重要性:**
+   - 特征选择与 ML 技术结合提升预测性能
+   - 混合模型 (MACD + TEMA) 生成交易信号
+   - 随机森林 + 技术指标适合高频数据预测
+
+**来源:**
+- The Alpha Scientist - Feature Engineering 指南
+- Scientific Reports - 频域与时序特征融合
+- arXiv 2024 - 技术指标对 ML 模型影响评估
+
+### 8.2 GPU 训练优化技术
+
+**搜索查询:** `GPU training optimization mixed precision gradient accumulation PyTorch finance 2025 -qclaw`
+
+**核心发现:**
+
+1. **混合精度训练 (AMP):**
+   - PyTorch `torch.cuda.amp` 支持自动混合精度
+   - 使用 FP16/BF16 降低精度加速训练
+   - 显存占用减少 50%，Tensor Cores 加速
+   - NVIDIA/AMD GPU 均支持
+
+2. **梯度累积:**
+   - 在有限显存上训练大 batch size
+   - 解耦梯度计算与参数更新
+   - 适合内存受限硬件
+
+3. **优化器选择:**
+   - `optimi` 库支持 Kahan 求和的低精度训练
+   - 梯度释放 + 优化器累积提高内存效率
+   - TorchAO (2024-2025) 支持 INT8/INT4 量化
+
+4. **性能提升数据:**
+   - EKS 环境优化：CV 模型推理吞吐提升 3.8x
+   - NLP Transformer 推理提升 2.6x
+   - 训练时间减少 43%
+
+**qclaw 应用建议:**
+```python
+# 混合精度训练示例
+from torch.cuda.amp import autocast, GradScaler
+
+scaler = GradScaler()
+for batch in dataloader:
+    with autocast():
+        output = model(batch)
+        loss = criterion(output, target)
+    scaler.scale(loss).backward()
+    scaler.step(optimizer)
+    scaler.update()
+```
+
+---
+
+**调研完成时间:** 2026-03-06 11:07  
 **调研工具:** Tavily Search API  
-**总搜索次数:** 4 次  
-**总参考来源:** 34 个
+**总搜索次数:** 6 次 (4 次通用 + 2 次专项)  
+**总参考来源:** 50+ 个 (论文、开源项目、技术文章)  
+**排除策略:** 使用 `-qclaw` 过滤项目自身内容
