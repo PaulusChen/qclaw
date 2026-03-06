@@ -3,7 +3,7 @@
 提供 MACD、KDJ、RSI 等技术指标计算
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import Optional, List
 from datetime import datetime
 import logging
@@ -17,7 +17,7 @@ router = APIRouter()
 
 @router.get("/macd/{symbol}")
 async def get_macd(
-    symbol: str = Query(..., description="股票代码或指数代码"),
+    symbol: str = Path(..., description="股票代码或指数代码"),
     period: str = Query("daily", description="周期：daily/weekly/monthly")
 ):
     """
@@ -58,7 +58,7 @@ async def get_macd(
 
 @router.get("/kdj/{symbol}")
 async def get_kdj(
-    symbol: str = Query(..., description="股票代码或指数代码"),
+    symbol: str = Path(..., description="股票代码或指数代码"),
     period: str = Query("daily", description="周期：daily/weekly/monthly")
 ):
     """
@@ -99,7 +99,7 @@ async def get_kdj(
 
 @router.get("/rsi/{symbol}")
 async def get_rsi(
-    symbol: str = Query(..., description="股票代码或指数代码"),
+    symbol: str = Path(..., description="股票代码或指数代码"),
     period: str = Query("daily", description="周期：daily/weekly/monthly"),
     n: int = Query(14, description="RSI 周期，默认 14")
 ):
@@ -141,7 +141,7 @@ async def get_rsi(
 
 @router.get("/ma/{symbol}")
 async def get_ma(
-    symbol: str = Query(..., description="股票代码或指数代码"),
+    symbol: str = Path(..., description="股票代码或指数代码"),
     period: str = Query("daily", description="周期：daily/weekly/monthly"),
     windows: List[int] = Query([5, 10, 20], description="均线周期列表")
 ):
@@ -184,7 +184,7 @@ async def get_ma(
 
 @router.get("/boll/{symbol}")
 async def get_boll(
-    symbol: str = Query(..., description="股票代码或指数代码"),
+    symbol: str = Path(..., description="股票代码或指数代码"),
     period: str = Query("daily", description="周期：daily/weekly/monthly"),
     n: int = Query(20, description="布林带周期")
 ):

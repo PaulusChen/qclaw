@@ -12,7 +12,7 @@ import redis.asyncio as redis
 import logging
 
 from config.settings import settings
-from api import market, indicators, advice, news
+from api import market, indicators, advice, news, deep_learning
 from services import akshare_service, cache_service
 
 # 配置日志
@@ -98,6 +98,7 @@ app.include_router(market.router, prefix="/api/market", tags=["行情数据"])
 app.include_router(indicators.router, prefix="/api/indicators", tags=["技术指标"])
 app.include_router(advice.router, prefix="/api/advice", tags=["AI 建议"])
 app.include_router(news.router, prefix="/api/news", tags=["财经新闻"])
+app.include_router(deep_learning.router, prefix="/api/v1/dl", tags=["深度学习"])
 
 
 # 根路径

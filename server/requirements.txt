@@ -16,3 +16,4 @@ httpx>=0.26.0
 
 # 工具库
 python-dotenv>=1.0.0
+python-multipart>=0.0.6

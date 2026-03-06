@@ -3,7 +3,7 @@ AI 建议 API
 集成 OpenClaw API，提供投资建议
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import Optional, List
 from datetime import datetime
 import logging
@@ -60,7 +60,7 @@ async def get_advice(
 
 
 @router.get("/analysis/{symbol}")
-async def get_stock_analysis(symbol: str = Query(..., description="股票代码或指数代码")):
+async def get_stock_analysis(symbol: str = Path(..., description="股票代码或指数代码")):
     """
     获取个股/指数深度分析
     

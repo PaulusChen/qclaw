@@ -3,7 +3,7 @@
 提供股票、指数行情数据
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import Optional
 from datetime import datetime
 import logging
@@ -17,7 +17,7 @@ router = APIRouter()
 
 @router.get("/index/{index_id}")
 async def get_index_data(
-    index_id: str = Query(..., description="指数代码，如：sh000001, sz399001, sz399006"),
+    index_id: str = Path(..., description="指数代码，如：sh000001, sz399001, sz399006"),
     period: str = Query("daily", description="周期：daily/weekly/monthly")
 ):
     """
@@ -57,7 +57,7 @@ async def get_index_data(
 
 @router.get("/stock/{symbol}")
 async def get_stock_data(
-    symbol: str = Query(..., description="股票代码，如：600519, 000001"),
+    symbol: str = Path(..., description="股票代码，如：600519, 000001"),
     period: str = Query("daily", description="周期：daily/weekly/monthly")
 ):
     """
@@ -93,7 +93,7 @@ async def get_stock_data(
 
 
 @router.get("/realtime/{symbol}")
-async def get_realtime_quote(symbol: str = Query(..., description="股票代码或指数代码")):
+async def get_realtime_quote(symbol: str = Path(..., description="股票代码或指数代码")):
     """
     获取实时行情
     

@@ -3,7 +3,7 @@
 提供财经新闻、政策解读等资讯
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import Optional, List
 from datetime import datetime
 import logging
@@ -61,7 +61,7 @@ async def get_news(
 
 
 @router.get("/news/{news_id}")
-async def get_news_detail(news_id: str = Query(..., description="新闻 ID")):
+async def get_news_detail(news_id: str = Path(..., description="新闻 ID")):
     """
     获取新闻详情
     
