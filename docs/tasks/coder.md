@@ -187,7 +187,8 @@
 **子任务进度:**
 
 #### WEBUI-DL-001: 模型训练页面实现 ✅
-**状态:** ✅ 已完成 (2026-03-06 13:50)  
+**状态:** ✅ 已完成 (2026-03-06 13:55)  
+**提交 ID:** `d7a700f`  
 **交付物:**
 - `webui/src/pages/DeepLearning/Training/TrainingPage.tsx` - 训练页面主组件
 - `webui/src/pages/DeepLearning/Training/components/TrainingChart.tsx` - 训练曲线图表
@@ -198,11 +199,13 @@
 
 **功能:**
 - ✅ 模型选择器 (LSTM / Transformer)
-- ✅ 训练参数配置表单
-- ✅ 实时训练进度监控
-- ✅ 训练指标图表展示 (损失曲线、学习率曲线)
-- ✅ 训练日志实时滚动
+- ✅ 训练参数配置表单 (学习率、batch_size、epochs、optimizer、lr_scheduler)
+- ✅ 实时训练进度监控 (进度条、Epoch 计数)
+- ✅ 训练指标图表展示 (损失曲线、学习率曲线 - Recharts)
+- ✅ 训练日志实时滚动显示
 - ✅ 开始/停止训练控制
+- ✅ 高级选项折叠面板 (混合精度、梯度裁剪、早停)
+- ✅ 响应式布局 (移动端/桌面端)
 
 **下一步:** WEBUI-DL-002 (模型推理页面实现)
 
