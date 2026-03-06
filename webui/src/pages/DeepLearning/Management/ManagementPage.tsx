@@ -305,13 +305,19 @@ const ManagementPage: React.FC = () => {
     : [];
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex justify-between items-center">
-        <Title level={2} style={{ margin: 0 }}>模型管理</Title>
-        <Space>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+        <Title level={2} style={{ margin: 0 }} className="text-xl sm:text-2xl lg:text-3xl">模型管理</Title>
+        <Space 
+          direction={{ xs: 'vertical', sm: 'horizontal' }}
+          className="w-full sm:w-auto"
+        >
           <Button
             icon={<UploadOutlined />}
             onClick={() => setImportModalVisible(true)}
+            size={{ xs: 'middle', sm: 'default' }}
+            className="w-full sm:w-auto"
+            block={{ xs: true, sm: false }}
           >
             上传模型
           </Button>
@@ -320,30 +326,40 @@ const ManagementPage: React.FC = () => {
             type="primary"
             onClick={handleCompare}
             disabled={comparingModels.length < 2}
+            size={{ xs: 'middle', sm: 'default' }}
+            className="w-full sm:w-auto"
+            block={{ xs: true, sm: false }}
           >
             对比选中 ({comparingModels.length})
           </Button>
           {comparingModels.length > 0 && (
-            <Button onClick={clearComparison}>清空对比</Button>
+            <Button 
+              onClick={clearComparison}
+              size={{ xs: 'middle', sm: 'default' }}
+              className="w-full sm:w-auto"
+              block={{ xs: true, sm: false }}
+            >
+              清空对比
+            </Button>
           )}
         </Space>
       </div>
 
       {/* 筛选和搜索 */}
-      <Card className="mb-6">
-        <Space wrap>
+      <Card className="mb-4 sm:mb-6" bodyStyle={{ padding: '12px sm:16px' }}>
+        <Space wrap className="w-full">
           <Input
             placeholder="搜索模型版本或名称..."
             prefix={<InboxOutlined />}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 300 }}
+            style={{ width: '100%', minWidth: 200, flex: '1 1 auto' }}
             allowClear
           />
           <Select
             value={statusFilter}
             onChange={setStatusFilter}
-            style={{ width: 150 }}
+            style={{ width: '100%', minWidth: 140, flex: '0 0 auto' }}
           >
             <Option value="all">全部状态</Option>
             <Option value="active">激活</Option>

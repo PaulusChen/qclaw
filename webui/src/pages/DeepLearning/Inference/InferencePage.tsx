@@ -335,18 +335,18 @@ const InferencePage: React.FC = () => {
   ];
 
   return (
-    <div className="p-6">
-      <Title level={2}>模型推理</Title>
-      <Paragraph type="secondary">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <Title level={2} className="text-xl sm:text-2xl lg:text-3xl mb-2 sm:mb-4">模型推理</Title>
+      <Paragraph type="secondary" className="text-sm sm:text-base mb-4 sm:mb-6">
         使用训练好的深度学习模型对股票进行预测，支持单次预测和批量预测
       </Paragraph>
 
-      <Space direction="vertical" style={{ width: '100%' }} size="large">
+      <Space direction="vertical" style={{ width: '100%' }} size="large" className="w-full">
         {/* 预测配置卡片 */}
-        <Card title="预测配置" size="small">
+        <Card title="预测配置" size="small" bodyStyle={{ padding: '12px sm:16px' }}>
           <Form
             form={form}
-            layout="inline"
+            layout={{ xs: 'vertical', sm: 'inline' }}
             onFinish={handleSinglePredict}
             disabled={loading && batchStatus === 'running'}
           >
@@ -354,8 +354,9 @@ const InferencePage: React.FC = () => {
               label="模型版本"
               name="model_version"
               rules={[{ required: true, message: '请选择模型' }]}
+              className="w-full sm:w-auto"
             >
-              <Select style={{ width: 200 }} placeholder="选择模型">
+              <Select style={{ width: '100%', minWidth: 180 }} placeholder="选择模型">
                 {models.map(model => (
                   <Select.Option key={model.version} value={model.version}>
                     {model.version} {model.is_active && <Tag color="green">激活</Tag>}
@@ -371,10 +372,11 @@ const InferencePage: React.FC = () => {
               label="股票代码"
               name="stock_code"
               rules={[{ required: true, message: '请输入股票代码' }]}
+              className="w-full sm:w-auto"
             >
               <Input
                 placeholder="000001.SZ"
-                style={{ width: 150 }}
+                style={{ width: '100%', minWidth: 150 }}
                 prefix={<SearchOutlined />}
               />
             </Form.Item>
@@ -383,18 +385,20 @@ const InferencePage: React.FC = () => {
               label="预测日期"
               name="date"
               rules={[{ required: true, message: '请选择日期' }]}
+              className="w-full sm:w-auto"
             >
-              <DatePicker style={{ width: 140 }} />
+              <DatePicker style={{ width: '100%', minWidth: 140 }} />
             </Form.Item>
 
             <Form.Item
               label="预测周期"
               name="horizons"
               initialValue={[1, 3, 5]}
+              className="w-full sm:w-auto"
             >
               <Select
                 mode="multiple"
-                style={{ width: 200 }}
+                style={{ width: '100%', minWidth: 180 }}
                 placeholder="选择周期"
                 maxTagCount="responsive"
               >
@@ -406,13 +410,19 @@ const InferencePage: React.FC = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item>
-              <Space>
+            <Form.Item className="w-full sm:w-auto mt-2 sm:mt-0">
+              <Space 
+                direction={{ xs: 'vertical', sm: 'horizontal' }}
+                className="w-full sm:w-auto"
+              >
                 <Button
                   type="primary"
                   htmlType="submit"
                   icon={<PlayCircleOutlined />}
                   loading={loading}
+                  size={{ xs: 'middle', sm: 'default' }}
+                  className="w-full sm:w-auto"
+                  block={{ xs: true, sm: false }}
                 >
                   开始预测
                 </Button>
@@ -420,6 +430,9 @@ const InferencePage: React.FC = () => {
                   type="default"
                   icon={<ThunderboltOutlined />}
                   onClick={() => setShowAdvanced(!showAdvanced)}
+                  size={{ xs: 'middle', sm: 'default' }}
+                  className="w-full sm:w-auto"
+                  block={{ xs: true, sm: false }}
                 >
                   批量预测
                 </Button>

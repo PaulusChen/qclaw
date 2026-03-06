@@ -740,10 +740,10 @@ const PreprocessingPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <Title level={2}>数据预处理配置</Title>
-        <Text type="secondary">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6">
+        <Title level={2} className="text-xl sm:text-2xl lg:text-3xl mb-2">数据预处理配置</Title>
+        <Text type="secondary" className="text-sm sm:text-base block">
           配置数据源、选择特征、设置标准化方法，为深度学习模型准备训练数据
         </Text>
       </div>
@@ -827,31 +827,46 @@ const PreprocessingPage: React.FC = () => {
       {renderDataPreview()}
 
       {/* 底部操作栏 */}
-      <Card className="sticky bottom-4 shadow-lg">
-        <div className="flex justify-between items-center">
-          <Space>
+      <Card className="sticky bottom-4 shadow-lg" bodyStyle={{ padding: '12px sm:16px' }}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+          <Space 
+            direction={{ xs: 'vertical', sm: 'horizontal' }}
+            className="w-full sm:w-auto"
+          >
             <Button
               icon={<SaveOutlined />}
               onClick={() => setShowSaveModal(true)}
+              size={{ xs: 'middle', sm: 'default' }}
+              className="w-full sm:w-auto"
+              block={{ xs: true, sm: false }}
             >
               保存配置
             </Button>
             <Button
               icon={<FolderOpenOutlined />}
               onClick={() => setShowLoadModal(true)}
+              size={{ xs: 'middle', sm: 'default' }}
+              className="w-full sm:w-auto"
+              block={{ xs: true, sm: false }}
             >
               加载配置
             </Button>
           </Space>
 
-          <Space>
-            <Text type="secondary">
+          <Space 
+            direction={{ xs: 'vertical', sm: 'horizontal' }}
+            align="end"
+            className="w-full sm:w-auto"
+          >
+            <Text type="secondary" className="text-sm">
               已选特征：{selectedFeatures.size}/38
             </Text>
             <Button
               type="primary"
               icon={<PlayCircleOutlined />}
-              size="large"
+              size={{ xs: 'middle', sm: 'default' }}
+              className="w-full sm:w-auto"
+              block={{ xs: true, sm: false }}
               loading={processing && taskStatus === 'running'}
               onClick={handleApplyPreprocessing}
               disabled={selectedFeatures.size === 0}

@@ -235,16 +235,17 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
   const modelType = Form.useWatch('model_type', form);
 
   return (
-    <div className="p-6">
-      <Title level={2}>模型训练</Title>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <Title level={2} className="text-xl sm:text-2xl lg:text-3xl mb-4 sm:mb-6">模型训练</Title>
       
       <Row gutter={[16, 16]}>
         {/* 左侧配置面板 */}
-        <Col xs={24} lg={7}>
+        <Col xs={24} sm={24} md={24} lg={8} xl={7}>
           <Card 
             title="训练配置" 
             className="mb-4"
             size="small"
+            bodyStyle={{ padding: '12px sm:16px' }}
           >
             <Form
               form={form}
@@ -382,15 +383,21 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
                 </Panel>
               </Collapse>
 
-              <Divider />
+              <Divider className="my-3 sm:my-4" />
 
-              <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+              <Space 
+                direction={{ xs: 'vertical', sm: 'horizontal' }}
+                style={{ width: '100%' }} 
+                className="w-full"
+              >
                 <Button 
                   type="primary" 
                   htmlType="submit" 
                   icon={<PlayCircleOutlined />}
                   disabled={trainingStatus === 'running'}
-                  size="large"
+                  size={{ xs: 'middle', sm: 'large' }}
+                  className="w-full sm:w-auto"
+                  block={{ xs: true, sm: false }}
                 >
                   开始训练
                 </Button>
@@ -398,6 +405,9 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
                   icon={<ReloadOutlined />} 
                   onClick={handleReset}
                   disabled={trainingStatus === 'running'}
+                  size={{ xs: 'middle', sm: 'default' }}
+                  className="w-full sm:w-auto"
+                  block={{ xs: true, sm: false }}
                 >
                   重置
                 </Button>
@@ -407,12 +417,12 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
         </Col>
 
         {/* 右侧监控面板 */}
-        <Col xs={24} lg={17}>
-          <Space direction="vertical" style={{ width: '100%' }} size="middle">
+        <Col xs={24} sm={24} md={24} lg={16} xl={17}>
+          <Space direction="vertical" style={{ width: '100%' }} size="middle" className="w-full">
             {/* 训练状态卡片 */}
-            <Card size="small">
-              <Row gutter={16}>
-                <Col span={8}>
+            <Card size="small" bodyStyle={{ padding: '12px sm:16px' }}>
+              <Row gutter={[12, 12]}>
+                <Col xs={12} sm={8}>
                   <Statistic
                     title="状态"
                     value={trainingStatus === 'idle' ? '未开始' : 
@@ -431,19 +441,20 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
                     }
                   />
                 </Col>
-                <Col span={8}>
+                <Col xs={12} sm={8}>
                   <Statistic
                     title="Epoch"
                     value={currentEpoch}
                     suffix={`/ ${totalEpochs}`}
+                    valueStyle={{ fontSize: 'clamp(16px, 4vw, 20px)' }}
                   />
                 </Col>
-                <Col span={8}>
+                <Col xs={24} sm={8}>
                   <Statistic
                     title="当前损失"
                     value={metrics.train_loss}
                     precision={4}
-                    valueStyle={{ color: '#722ed1' }}
+                    valueStyle={{ color: '#722ed1', fontSize: 'clamp(16px, 4vw, 20px)' }}
                   />
                 </Col>
               </Row>
@@ -451,20 +462,23 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
               {trainingStatus === 'running' && (
                 <Progress
                   percent={Math.round((currentEpoch / totalEpochs) * 100)}
+                  className="mt-4 sm:mt-6"
                   strokeColor={{
                     '0%': '#722ed1',
                     '100%': '#b37feb',
                   }}
-                  style={{ marginTop: 16 }}
                 />
               )}
               
               {trainingStatus === 'running' && (
-                <div style={{ marginTop: 16, textAlign: 'right' }}>
+                <div className="mt-4 sm:mt-6 text-right">
                   <Button 
                     danger 
                     icon={<StopOutlined />} 
                     onClick={handleStopTraining}
+                    size={{ xs: 'middle', sm: 'default' }}
+                    className="w-full sm:w-auto"
+                    block={{ xs: true, sm: false }}
                   >
                     停止训练
                   </Button>
