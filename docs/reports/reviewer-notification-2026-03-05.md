@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 test-history-summary.md -->
+
 # Reviewer 审核完成通知
 
 **发送人:** qclaw-reviewer  

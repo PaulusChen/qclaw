@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # DESIGN-DL-003 最终状态报告
 
 **报告时间:** 2026-03-06 03:55  

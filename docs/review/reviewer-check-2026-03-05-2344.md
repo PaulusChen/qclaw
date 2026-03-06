@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # Reviewer 任务检查报告
 
 **检查时间:** 2026-03-05 23:44 (Asia/Shanghai)  

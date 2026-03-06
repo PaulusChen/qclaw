@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # qclaw WebUI 技术方案设计
 
 **任务 ID:** DESIGN-002  

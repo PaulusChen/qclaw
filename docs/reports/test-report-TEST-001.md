@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 test-history-summary.md -->
+
 # TEST-001 测试报告
 
 **任务 ID:** TEST-001  

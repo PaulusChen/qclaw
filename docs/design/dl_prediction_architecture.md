@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # 深度学习量化预测系统架构设计
 
 **文档 ID:** ARCH-DL-001  

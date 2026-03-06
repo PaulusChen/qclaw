@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 progress-history-summary.md -->
+
 # QCLaw 项目进度报告
 
 **报告时间:** 2026-03-05 19:00 (Asia/Shanghai)  

@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # 深度学习量化预测技术方案
 
 **文档版本:** v1.1  

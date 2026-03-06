@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # 技术方案审核报告
 
 **任务 ID:** REVIEW-002  

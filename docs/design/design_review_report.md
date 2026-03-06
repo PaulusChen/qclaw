@@ -1,3 +1,5 @@
+<!-- ARCHIVED: 已压缩至 check-history-summary.md -->
+
 # 设计复查报告 - DESIGN-REVIEW-001
 
 **复查负责人:** qclaw-designer  
