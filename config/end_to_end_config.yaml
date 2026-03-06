@@ -1,0 +1,210 @@
+# 端到端配置文件
+# 用于整合数据层、特征层、模型层、训练层、推理层、回测层
+
+# 通用配置
+common:
+  project_root: "."
+  random_seed: 42
+  device: "cuda"  # "cuda" or "cpu"
+  num_workers: 4
+  verbose: true
+
+# 数据配置
+data:
+  source: "akshare"  # 数据源：akshare, qlib, local
+  cache_dir: "data/cache"
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  
+  # 股票池配置
+  stock_pool:
+    market: "A 股"
+    indices:
+      - "000001.SH"  # 上证指数
+      - "399001.SZ"  # 深证成指
+      - "399006.SZ"  # 创业板指
+    stocks:
+      - "000001.SZ"  # 平安银行
+      - "000002.SZ"  # 万科 A
+      - "600000.SH"  # 浦发银行
+    
+  # 时间范围
+  time_range:
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+  
+  # 数据字段
+  fields:
+    - "open"
+    - "high"
+    - "low"
+    - "close"
+    - "volume"
+    - "amount"
+    - "vwap"
+
+# 特征工程配置
+features:
+  # 技术指标
+  technical_indicators:
+    moving_averages:
+      - 5
+      - 10
+      - 20
+      - 60
+    macd:
+      fast_period: 12
+      slow_period: 26
+      signal_period: 9
+    kdj:
+      n_period: 9
+      m1_period: 3
+      m2_period: 3
+    rsi:
+      periods: [6, 12, 24]
+  
+  # 特征序列长度
+  sequence_length: 60
+  
+  # 特征标准化
+  normalization:
+    method: "zscore"  # "zscore", "minmax", "robust"
+    fit_on: "train"  # 仅在训练集上拟合
+
+# 模型配置
+model:
+  type: "lstm"  # "lstm" or "transformer"
+  
+  # LSTM 配置
+  lstm:
+    input_size: 25  # 特征数
+    hidden_size: 128
+    num_layers: 2
+    dropout: 0.2
+    bidirectional: false
+  
+  # Transformer 配置
+  transformer:
+    input_size: 25
+    d_model: 128
+    nhead: 8
+    num_encoder_layers: 4
+    dim_feedforward: 512
+    dropout: 0.1
+    max_seq_len: 60
+  
+  # 多任务学习
+  multi_task:
+    enabled: true
+    tasks:
+      - "direction"  # 涨跌方向预测
+      - "return"     # 收益率预测
+      - "confidence" # 置信度预测
+  
+  # 检查点配置
+  checkpoint:
+    dir: "checkpoints"
+    save_interval: 10
+    keep_last_n: 5
+
+# 训练配置
+training:
+  # 数据集划分
+  split:
+    train: 0.7
+    validation: 0.15
+    test: 0.15
+  
+  # 训练参数
+  batch_size: 32
+  epochs: 100
+  learning_rate: 0.001
+  weight_decay: 1.0e-5
+  
+  # 优化器
+  optimizer: "adam"
+  scheduler:
+    type: "ReduceLROnPlateau"
+    mode: "min"
+    factor: 0.5
+    patience: 5
+  
+  # 早停
+  early_stopping:
+    enabled: true
+    patience: 10
+    min_delta: 0.001
+  
+  # 日志
+  log_interval: 10
+  tensorboard: true
+  tensorboard_dir: "logs/tensorboard"
+
+# 推理配置
+inference:
+  batch_size: 1
+  real_time: true
+  output_format: "json"
+  
+  # 后处理
+  postprocessing:
+    threshold: 0.5
+    smooth_window: 5
+
+# 回测配置
+backtest:
+  # 回测时间范围
+  time_range:
+    start_date: "2023-01-01"
+    end_date: "2025-12-31"
+  
+  # 初始资金
+  initial_capital: 1000000
+  
+  # 交易配置
+  trading:
+    commission_rate: 0.0003  # 手续费率
+    slippage: 0.001          # 滑点
+    position_limit: 0.1      # 单只股票最大仓位
+    stop_loss: 0.05          # 止损线
+    take_profit: 0.15        # 止盈线
+  
+  # 基准
+  benchmark: "000001.SH"  # 上证指数
+  
+  # 评估指标
+  metrics:
+    - "annual_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_loss_ratio"
+    - "total_return"
+    - "volatility"
+    - "calmar_ratio"
+
+# 评估配置
+evaluation:
+  # 评估指标
+  metrics:
+    classification:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+      - "roc_auc"
+    regression:
+      - "mse"
+      - "mae"
+      - "rmse"
+      - "mape"
+    trading:
+      - "sharpe_ratio"
+      - "max_drawdown"
+      - "total_return"
+  
+  # 可视化
+  visualization:
+    enabled: true
+    output_dir: "results/figures"
+    formats: ["png", "pdf"]
