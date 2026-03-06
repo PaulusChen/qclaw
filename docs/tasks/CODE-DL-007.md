@@ -18,6 +18,27 @@
 
 ---
 
+## ⚠️ 重要原则：优先复用开源项目
+
+**🔄 P0 设计原则:**
+1. **第一选择:** 使用 `pytorch-forecasting` 库的 TFT 实现
+   - GitHub: https://github.com/jdb78/pytorch-forecasting
+   - 文档：https://pytorch-forecasting.readthedocs.io/en/stable/api/pytorch_forecasting.models.temporal_fusion_transformer.html
+   
+2. **第二选择:** 在开源实现基础上定制 (添加 qclaw 特定功能)
+
+3. **第三选择:** 自研实现 (仅在开源项目无法满足需求时)
+
+**评估标准:**
+- ✅ `pytorch-forecasting` 是否支持我们的数据格式？
+- ✅ 是否支持多步预测 (7/14/30 天)？
+- ✅ 是否支持注意力可视化？
+- ✅ 许可证是否兼容 (MIT/Apache)？
+
+**如果开源项目满足 80% 需求 → 使用开源项目 + 定制开发**
+
+---
+
 ## 🎯 实现目标
 
 ### 核心目标
