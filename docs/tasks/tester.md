@@ -66,10 +66,10 @@ git push origin main
 
 | 任务 ID | 任务名称 | 进度 | 备注 |
 |---------|---------|------|------|
-| TEST-SYS-001 | Docker 系统测试 | 0% | ✅ **阻塞已解除** - Docker 代理配置完成，可以开始测试 |
+| TEST-SYS-001 | Docker 系统测试 | 0% | ⚠️ **阻塞** - Docker 网络问题 (无法拉取 nginx 镜像) |
 | TEST-E2E-001 | 端到端流程测试 | 0% | 🔴 **阻塞** - 前端组件不完整，测试用例需更新 |
 | TEST-OPEN-001 | 开源项目评估测试 | 100% | ✅ **已完成** - OPEN-001.1/001.2/001.3/001.4 全部完成 |
-| TEST-DEEP-001 | 旧功能深入测试 | 0% | 🔥 **新任务** - qclaw-coder 执行 CODE-DL-007 期间执行 |
+| TEST-DEEP-001 | 旧功能深入测试 | 75% | ✅ **基本完成** - 前端测试通过，API 测试待后端完善 |
 | TEST-INT-002 | 开源集成测试 | ✅ **已完成** | 🔥 P1 - 12/12 测试通过，报告已生成 (2026-03-06 17:35) |
 | TEST-DL-001 | TFT 模型性能测试 | 100% | ✅ **已完成** - 报告已提交 (2026-03-06 16:26) |
 | TEST-BT-001 | 回测框架功能测试 | 100% | ✅ **已完成** - 报告已提交 (2026-03-06 16:30) |
@@ -857,6 +857,30 @@ docker-compose down
 
 ## 📝 检查日志
 
+### 2026-03-06 18:00 - Cron 检查
+- [x] 读取任务文件
+- [x] TEST-DL-001 状态确认：✅ 已完成
+- [x] TEST-BT-001 状态确认：✅ 已完成
+- [x] TEST-DEEP-001 执行：✅ 基本完成 (前端测试通过，API 测试待修复)
+- [x] 创建测试文件：`tests/e2e/test_edge_cases.py` (边界条件测试)
+- [x] 创建测试文件：`tests/e2e/test_error_handling.py` (异常处理测试)
+- [x] 创建测试文件：`tests/performance/test_baseline.py` (性能基准测试)
+- [x] 生成测试报告：`docs/reports/test-deep-001-report.md`
+- [x] 生成性能报告：`docs/reports/performance-baseline-2026-03-06.md`
+- [x] 前端性能验证：✅ 1.68ms 加载时间 (优秀)
+- [x] 前端并发验证：✅ 20/20 成功 (100%)
+- [x] 更新任务文件状态
+- [ ] 提交到 git
+- [ ] TEST-SYS-001：⚠️ 阻塞 (Docker 网络问题)
+- [ ] API 测试：⚠️ 阻塞 (端点不匹配，待 Coder 修复)
+
+**下一步:**
+1. 提交测试文件和报告到 git
+2. 通知 Coder 修复 API 端点问题
+3. 等待 Docker 网络恢复后执行 TEST-SYS-001
+
+---
+
 ### 2026-03-06 17:12 - Cron 检查
 - [x] 读取任务文件
 - [x] TEST-DL-001 状态确认：✅ 已完成 (报告已提交 commit 47d92bc)
@@ -925,7 +949,7 @@ docker-compose down
 
 ---
 
-## 📝 测试完成备注 (2026-03-06 16:30)
+## 📝 测试完成备注 (2026-03-06 18:00)
 
 **TEST-DL-001 (TFT 模型性能测试):**
 - ✅ 测试真实执行完成
@@ -941,5 +965,19 @@ docker-compose down
 - 5/5 功能测试通过
 - A 股兼容性验证通过
 
+**TEST-DEEP-001 (旧功能深入测试):**
+- ✅ E2E 边界条件测试完成：`tests/e2e/test_edge_cases.py`
+- ✅ E2E 异常处理测试完成：`tests/e2e/test_error_handling.py`
+- ✅ 性能基准测试完成：`tests/performance/test_baseline.py`
+- ✅ 测试报告生成：`docs/reports/test-deep-001-report.md`
+- ✅ 性能基准报告：`docs/reports/performance-baseline-2026-03-06.md`
+- 前端性能：1.68ms 加载时间 (✅ 远超目标 3s)
+- 前端并发：20/20 成功 (✅ 100%)
+- ⚠️ API 测试：8/13 失败 (API 端点不匹配，待 Coder 修复)
+
+**TEST-SYS-001 (Docker 系统测试):**
+- ⚠️ 阻塞 - Docker 网络问题 (无法拉取 nginx 镜像)
+- 待网络恢复后重试
+
 **测试负责人:** qclaw-tester  
-**测试时间:** 2026-03-06 16:30
+**测试时间:** 2026-03-06 18:00
