@@ -841,3 +841,18 @@ docker-compose down
 2. 提交测试报告到 `docs/reports/`
 3. 准备 TEST-OPEN-001 (等待 CODE-DL-007 完成后开始)
 
+
+---
+
+## 📝 检查日志
+
+### 2026-03-06 14:56 - 任务启动
+- [x] TEST-OPEN-001.4 完成 (yfinance + tsfresh 评估) ✅
+- [x] TEST-DL-001 任务文件创建
+- [x] TEST-BT-001 任务文件创建
+- [ ] TEST-DL-001 执行中
+- [ ] TEST-BT-001 执行中
+
+**下一步:**
+1. 开始 TEST-DL-001 (TFT 模型性能测试)
+2. 开始 TEST-BT-001 (回测框架功能测试)

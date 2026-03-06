@@ -2,3 +2,4 @@
 export * from './training';
 export * from './inference';
 export * from './management';
+export * from './preprocessing';
