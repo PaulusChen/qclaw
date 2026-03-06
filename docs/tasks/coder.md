@@ -178,6 +178,99 @@
 
 ---
 
+### WEBUI-DL-001 ~ WEBUI-DL-007: 深度学习 WebUI 实现 🆕
+**优先级:** 🔥 **P0 (最高)**  
+**依赖:** REVIEW-WEBUI-001 审查通过 (2026-03-06 13:45)  
+**交付物:** 4 个深度学习页面 + API 对接 + 测试  
+**状态:** ⏳ 待开始 (已解锁)
+
+**设计文档:** `docs/design/webui-deep-learning.md`  
+**审查报告:** `docs/review/webui-deep-learning-review.md`  
+**审查结论:** ✅ 通过 (综合评分 4.8/5)
+
+**任务分解:**
+
+| 任务 ID | 任务名称 | 预计工时 | 优先级 | 依赖 |
+|---------|---------|---------|--------|------|
+| WEBUI-DL-001 | 模型训练页面实现 | 8h | P0 | 无 |
+| WEBUI-DL-002 | 模型推理页面实现 | 6h | P0 | 无 |
+| WEBUI-DL-003 | 模型管理页面实现 | 6h | P1 | 无 |
+| WEBUI-DL-004 | 数据预处理页面实现 | 6h | P1 | 无 |
+| WEBUI-DL-005 | API 接口对接 | 4h | P0 | WEBUI-DL-001~004 |
+| WEBUI-DL-006 | 响应式适配 | 2h | P1 | WEBUI-DL-001~004 |
+| WEBUI-DL-007 | 单元测试 | 4h | P1 | WEBUI-DL-001~006 |
+| **总计** | | **36h** | | |
+
+**核心页面:**
+
+1. **模型训练页面** (`/deep-learning/training`)
+   - 模型选择器 (LSTM / Transformer)
+   - 训练参数配置表单
+   - 实时训练进度监控 (WebSocket)
+   - 训练指标图表展示 (损失曲线、学习率曲线)
+   - 训练日志实时滚动
+
+2. **模型推理页面** (`/deep-learning/inference`)
+   - 模型版本选择
+   - 预测参数输入 (股票代码、日期)
+   - 预测结果展示 (方向/收益率/信号)
+   - 置信度可视化
+   - 特征重要性条形图
+   - 历史预测准确率趋势
+
+3. **模型管理页面** (`/deep-learning/management`)
+   - 模型列表展示
+   - 版本管理 (激活/归档/删除)
+   - 模型性能对比
+   - 模型导入/导出
+   - 模型详情弹窗
+
+4. **数据预处理配置页面** (`/deep-learning/preprocessing`)
+   - 数据源配置 (数据库/文件)
+   - 特征选择器 (38 个特征分组)
+   - 标准化方法配置 (Z-Score/Min-Max/Robust/RankGauss)
+   - 数据预览和统计
+
+**技术栈:**
+- React 18.x
+- Ant Design 5.x
+- Recharts 2.x + ECharts 5.x
+- Zustand 4.x (状态管理)
+- Axios 1.x (HTTP 客户端)
+- TailwindCSS 3.x
+
+**API 接口:**
+```typescript
+POST /api/v1/dl/training/start      // 启动训练
+GET  /api/v1/dl/training/{id}/status // 获取训练状态
+POST /api/v1/dl/training/{id}/stop   // 停止训练
+POST /api/v1/dl/predict/single       // 单次预测
+POST /api/v1/dl/predict/batch        // 批量预测
+GET  /api/v1/dl/models               // 获取模型列表
+POST /api/v1/dl/models/{version}/activate // 激活模型
+```
+
+**验收标准:**
+- [ ] 4 个页面全部实现且功能正常
+- [ ] 模型训练页面支持启动/监控/停止训练
+- [ ] 模型推理页面支持单次/批量预测
+- [ ] 模型管理页面支持版本管理和对比
+- [ ] 数据预处理页面支持特征选择和配置
+- [ ] 与现有 WebUI 风格一致
+- [ ] 响应式布局正常工作 (桌面/平板/移动)
+- [ ] 组件单元测试覆盖率 > 80%
+- [ ] API 接口对接完成
+- [ ] 代码通过 ESLint 检查
+
+**下一步:**
+1. 创建页面组件骨架
+2. 实现各页面核心功能
+3. 对接后端 API
+4. 响应式适配
+5. 编写单元测试
+
+---
+
 ## ✅ 已完成
 
 ### CODE-009: 修复 E2E 测试发现的新 UI Bug (第二轮) ✅
