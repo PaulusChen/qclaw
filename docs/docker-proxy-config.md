@@ -21,9 +21,9 @@
 ### 代理地址
 
 ```bash
-HTTP_PROXY=http://clash:bL8qpf@192.168.50.106:7890
-HTTPS_PROXY=http://clash:bL8qpf@192.168.50.106:7890
-NO_PROXY=192.168.50.0/24,127.0.0.1,localhost
+HTTP_PROXY=http://clash:bL8qpf@10.0.50.106:7890
+HTTPS_PROXY=http://clash:bL8qpf@10.0.50.106:7890
+NO_PROXY=10.0.0.0/16,127.0.0.1,localhost
 ```
 
 ### 配置方法
@@ -47,9 +47,9 @@ docker pull node:18-slim
 ```json
 {
   "proxies": {
-    "http-proxy": "http://clash:bL8qpf@192.168.50.106:7890",
-    "https-proxy": "http://clash:bL8qpf@192.168.50.106:7890",
-    "no-proxy": "192.168.50.0/24,127.0.0.1,localhost"
+    "http-proxy": "http://clash:bL8qpf@10.0.50.106:7890",
+    "https-proxy": "http://clash:bL8qpf@10.0.50.106:7890",
+    "no-proxy": "10.0.0.0/16,127.0.0.1,localhost"
   }
 }
 ```
@@ -60,9 +60,9 @@ docker pull node:18-slim
 
 ```ini
 [Service]
-Environment="HTTP_PROXY=http://clash:bL8qpf@192.168.50.106:7890"
-Environment="HTTPS_PROXY=http://clash:bL8qpf@192.168.50.106:7890"
-Environment="NO_PROXY=192.168.50.0/24,127.0.0.1,localhost"
+Environment="HTTP_PROXY=http://clash:bL8qpf@10.0.50.106:7890"
+Environment="HTTPS_PROXY=http://clash:bL8qpf@10.0.50.106:7890"
+Environment="NO_PROXY=10.0.0.0/16,127.0.0.1,localhost"
 ```
 
 **应用配置:**
@@ -149,8 +149,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - HTTP_PROXY=http://clash:bL8qpf@192.168.50.106:7890
-      - HTTPS_PROXY=http://clash:bL8qpf@192.168.50.106:7890
+      - HTTP_PROXY=http://clash:bL8qpf@10.0.50.106:7890
+      - HTTPS_PROXY=http://clash:bL8qpf@10.0.50.106:7890
     volumes:
       - ./src:/app/src
       - ./data:/app/data
@@ -162,8 +162,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - HTTP_PROXY=http://clash:bL8qpf@192.168.50.106:7890
-      - HTTPS_PROXY=http://clash:bL8qpf@192.168.50.106:7890
+      - HTTP_PROXY=http://clash:bL8qpf@10.0.50.106:7890
+      - HTTPS_PROXY=http://clash:bL8qpf@10.0.50.106:7890
     volumes:
       - ./webui:/app
 
@@ -198,14 +198,14 @@ source ~/clash_proxy.sh
 clash_proxy_on
 
 # 测试代理连通性
-curl -x http://clash:bL8qpf@192.168.50.106:7890 https://hub.docker.com
+curl -x http://clash:bL8qpf@10.0.50.106:7890 https://hub.docker.com
 ```
 
 ### 问题 2: 认证失败
 
 ```bash
 # 检查代理密码是否正确
-echo "http://clash:bL8qpf@192.168.50.106:7890" | curl -K - https://hub.docker.com
+echo "http://clash:bL8qpf@10.0.50.106:7890" | curl -K - https://hub.docker.com
 ```
 
 ### 问题 3: 镜像已存在
