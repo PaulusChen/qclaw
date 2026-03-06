@@ -182,7 +182,29 @@
 **优先级:** 🔥 **P0 (最高)**  
 **依赖:** REVIEW-WEBUI-001 审查通过 (2026-03-06 13:45)  
 **交付物:** 4 个深度学习页面 + API 对接 + 测试  
-**状态:** ⏳ 待开始 (已解锁)
+**状态:** 🔄 进行中 (2026-03-06 13:45)
+
+**子任务进度:**
+
+#### WEBUI-DL-001: 模型训练页面实现 ✅
+**状态:** ✅ 已完成 (2026-03-06 13:50)  
+**交付物:**
+- `webui/src/pages/DeepLearning/Training/TrainingPage.tsx` - 训练页面主组件
+- `webui/src/pages/DeepLearning/Training/components/TrainingChart.tsx` - 训练曲线图表
+- `webui/src/pages/DeepLearning/Training/components/TrainingLogs.tsx` - 训练日志组件
+- `webui/src/types/dl/training.ts` - 训练相关类型定义
+- `webui/src/services/dl/trainingApi.ts` - 训练 API 服务
+- `webui/src/store/slices/dl/trainingSlice.ts` - 训练状态管理 (Zustand)
+
+**功能:**
+- ✅ 模型选择器 (LSTM / Transformer)
+- ✅ 训练参数配置表单
+- ✅ 实时训练进度监控
+- ✅ 训练指标图表展示 (损失曲线、学习率曲线)
+- ✅ 训练日志实时滚动
+- ✅ 开始/停止训练控制
+
+**下一步:** WEBUI-DL-002 (模型推理页面实现)
 
 **设计文档:** `docs/design/webui-deep-learning.md`  
 **审查报告:** `docs/review/webui-deep-learning-review.md`  
