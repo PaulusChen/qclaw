@@ -12,8 +12,8 @@ import redis.asyncio as redis
 import logging
 
 from config.settings import settings
-from api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
-from api import indicators, news, deep_learning
+from server.api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
+from server.api import indicators, news, deep_learning
 from services import akshare_service, cache_service
 
 # 配置日志
