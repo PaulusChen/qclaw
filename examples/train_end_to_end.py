@@ -20,6 +20,7 @@ import torch
 import torch.nn as nn
 from pathlib import Path
 import numpy as np
+import pandas as pd
 from datetime import datetime
 import json
 
@@ -48,18 +49,36 @@ def generate_synthetic_data(n_samples: int = 5000, seq_len: int = 60, n_features
     """
     np.random.seed(42)
     
-    # 生成特征数据 (模拟 OHLCV + 技术指标)
-    features = np.random.randn(n_samples, seq_len, n_features).astype(np.float32)
+    # 生成 OHLCV 基础数据
+    n_ohlcv = 5
+    base_features = np.random.randn(n_samples, seq_len, n_ohlcv).astype(np.float32)
+    
+    # 模拟价格序列 (确保价格为正且连续)
+    close_prices = np.cumsum(np.abs(base_features[:, :, 0]) + 10, axis=1).astype(np.float32)
+    open_prices = close_prices + np.random.randn(n_samples, seq_len).astype(np.float32) * 0.1
+    high_prices = np.maximum(open_prices, close_prices) + np.abs(np.random.randn(n_samples, seq_len).astype(np.float32)) * 0.05
+    low_prices = np.minimum(open_prices, close_prices) - np.abs(np.random.randn(n_samples, seq_len).astype(np.float32)) * 0.05
+    volume = np.abs(np.random.randn(n_samples, seq_len).astype(np.float32)) * 1000000
     
     # 生成标签 (涨跌方向)
-    # 模拟：基于最后几个时间步的特征生成标签
-    direction = (features[:, -1, :5].mean(axis=1) > 0).astype(np.int64)
+    direction = (close_prices[:, -1] > close_prices[:, -2]).astype(np.int64)
     
     # 生成收益率标签
-    returns = features[:, -1, 0] * 0.01  # 模拟收益率
+    returns = (close_prices[:, -1] - close_prices[:, -2]) / close_prices[:, -2]
     
     # 生成置信度标签
     confidence = np.random.uniform(0.5, 1.0, n_samples).astype(np.float32)
+    
+    # 构建特征数组 (n_samples, seq_len, n_features)
+    # 使用 OHLCV + 一些额外特征填充到 n_features
+    features = np.stack([
+        open_prices, high_prices, low_prices, close_prices, volume
+    ], axis=-1)  # (n_samples, seq_len, 5)
+    
+    # 如果 n_features > 5，添加额外的随机特征
+    if n_features > 5:
+        extra_features = np.random.randn(n_samples, seq_len, n_features - 5).astype(np.float32)
+        features = np.concatenate([features, extra_features], axis=-1)
     
     targets = {
         "direction": direction,
@@ -67,7 +86,7 @@ def generate_synthetic_data(n_samples: int = 5000, seq_len: int = 60, n_features
         "confidence": confidence,
     }
     
-    return features, targets
+    return features, targets, n_samples, seq_len
 
 
 def main():
@@ -105,22 +124,51 @@ def main():
         print("  → 使用合成数据 (演示模式)")
         seq_len = config["features"]["sequence_length"]
         n_features = config["model"]["lstm"]["input_size"]
-        features, targets = generate_synthetic_data(n_samples=1000, seq_len=seq_len, n_features=n_features)
+        features, targets, n_samples, seq_len = generate_synthetic_data(n_samples=1000, seq_len=seq_len, n_features=n_features)
     else:
         # TODO: 实现真实数据加载
         print("  → 真实数据加载待实现")
         print("  → 切换到演示模式")
         seq_len = config["features"]["sequence_length"]
         n_features = config["model"]["lstm"]["input_size"]
-        features, targets = generate_synthetic_data(n_samples=1000, seq_len=seq_len, n_features=n_features)
+        features, targets, n_samples, seq_len = generate_synthetic_data(n_samples=1000, seq_len=seq_len, n_features=n_features)
     
     # 数据预处理
-    preprocessor = FeaturePreprocessor()
-    preprocessor.fit(features)
-    features_processed = preprocessor.transform(features)
+    # 构建 DataFrame (预处理器需要 OHLCV 列名)
+    # features shape: (n_samples, seq_len, n_features)
+    # 假设前 5 列是 OHLCV
+    df_data = pd.DataFrame({
+        'open': features[:, :, 0].reshape(-1),
+        'high': features[:, :, 1].reshape(-1),
+        'low': features[:, :, 2].reshape(-1),
+        'close': features[:, :, 3].reshape(-1),
+        'volume': features[:, :, 4].reshape(-1),
+    })
+    
+    # 添加额外特征列
+    for i in range(5, n_features):
+        df_data[f"feature_{i}"] = features[:, :, i].reshape(-1)
+    
+    feature_names = list(df_data.columns)
+    
+    preprocessor = FeaturePreprocessor(feature_columns=feature_names)
+    preprocessor.fit(df_data)
+    features_processed_df = preprocessor.transform(df_data)
+    
+    # 转换回 numpy 数组
+    # 预处理器会添加衍生特征，并且可能会改变样本数 (由于 diff() 等操作)
+    features_processed = np.array(features_processed_df)
+    actual_n_features = features_processed.shape[1]
+    total_rows = features_processed.shape[0]
+    # 重新计算实际可用的样本数 (总行数 / 序列长度)
+    actual_n_samples = total_rows // seq_len
+    # 截断到完整的样本数
+    features_processed = features_processed[:actual_n_samples * seq_len].reshape(actual_n_samples, seq_len, actual_n_features)
+    print(f"  → 实际特征数：{actual_n_features} (预处理器衍生)")
+    print(f"  → 实际样本数：{actual_n_samples} (原始：{len(features)})")
     
     # 数据集划分
-    n_samples = len(features_processed)
+    n_samples = actual_n_samples
     train_size = int(n_samples * config["training"]["split"]["train"])
     val_size = int(n_samples * config["training"]["split"]["validation"])
     test_size = n_samples - train_size - val_size
@@ -129,9 +177,11 @@ def main():
     val_features = features_processed[train_size:train_size + val_size]
     test_features = features_processed[train_size + val_size:]
     
-    train_targets = {k: v[:train_size] for k, v in targets.items()}
-    val_targets = {k: v[train_size:train_size + val_size] for k, v in targets.items()}
-    test_targets = {k: v[train_size + val_size:] for k, v in targets.items()}
+    # 调整 targets 以匹配实际样本数 (由于预处理器可能改变样本数)
+    targets_adjusted = {k: v[:n_samples] for k, v in targets.items()}
+    train_targets = {k: v[:train_size] for k, v in targets_adjusted.items()}
+    val_targets = {k: v[train_size:train_size + val_size] for k, v in targets_adjusted.items()}
+    test_targets = {k: v[train_size + val_size:] for k, v in targets_adjusted.items()}
     
     print(f"  → 训练集：{len(train_features)} 样本")
     print(f"  → 验证集：{len(val_features)} 样本")
@@ -160,7 +210,7 @@ def main():
     
     trainer = create_trainer(
         model_type=config["model"]["type"],
-        input_size=config["model"]["lstm"]["input_size"],
+        input_size=actual_n_features,  # 使用实际特征数
         hidden_size=config["model"]["lstm"]["hidden_size"],
         learning_rate=config["training"]["learning_rate"],
         weight_decay=config["training"]["weight_decay"],

@@ -5,7 +5,8 @@
 """
 
 import logging
-from typing import List, Optional
+from typing import List, Optional, Union
+from datetime import datetime
 import pandas as pd
 import sys
 
@@ -151,3 +152,83 @@ def check_numeric_data(
         return False
     
     return True
+
+
+def parse_date(date_input: Union[str, datetime, None]) -> Optional[datetime]:
+    """
+    解析日期输入为 datetime 对象
+    
+    参数:
+        date_input: 日期输入 (字符串或 datetime 对象)
+        
+    返回:
+        datetime 对象，如果输入为 None 则返回 None
+    """
+    if date_input is None:
+        return None
+    
+    if isinstance(date_input, datetime):
+        return date_input
+    
+    if isinstance(date_input, str):
+        # 尝试多种日期格式
+        formats = [
+            "%Y-%m-%d",
+            "%Y/%m/%d",
+            "%Y%m%d",
+            "%d-%m-%Y",
+            "%d/%m/%Y",
+        ]
+        
+        for fmt in formats:
+            try:
+                return datetime.strptime(date_input, fmt)
+            except ValueError:
+                continue
+        
+        # 如果都失败，尝试 pandas 解析
+        try:
+            return pd.to_datetime(date_input).to_pydatetime()
+        except Exception:
+            raise ValueError(f"无法解析日期：{date_input}")
+    
+    raise ValueError(f"不支持的日期类型：{type(date_input)}")
+
+
+def format_stock_code(symbol: str) -> str:
+    """
+    格式化股票代码为标准格式
+    
+    参数:
+        symbol: 股票代码 (如 "000001", "000001.SZ", "sz000001", "AAPL")
+        
+    返回:
+        标准格式的股票代码 (如 "000001.SZ")
+    """
+    symbol = str(symbol).strip().upper()
+    
+    # 如果已经有 . 分隔符，直接返回
+    if "." in symbol:
+        return symbol
+    
+    # 处理前缀格式 (如 SZ000001)
+    if symbol.startswith(("SH", "SZ", "SS")):
+        code = symbol[2:]
+        market = symbol[:2]
+        if market == "SH":
+            market = "SS"
+        return f"{code}.{market}"
+    
+    # 纯数字代码，根据代码范围判断市场
+    if symbol.isdigit():
+        if len(symbol) == 6:
+            # A 股代码
+            if symbol.startswith(("6", "688")):
+                return f"{symbol}.SS"  # 上交所
+            elif symbol.startswith(("0", "3")):
+                return f"{symbol}.SZ"  # 深交所
+            else:
+                return f"{symbol}.SS"  # 默认上交所
+    
+    # 美股或其他，直接返回
+    return symbol
