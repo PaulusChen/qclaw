@@ -12,7 +12,8 @@ import redis.asyncio as redis
 import logging
 
 from config.settings import settings
-from api import market, indicators, advice, news, deep_learning
+from api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
+from api import indicators, news, deep_learning
 from services import akshare_service, cache_service
 
 # 配置日志
@@ -37,7 +38,6 @@ async def lifespan(app: FastAPI):
             db=settings.REDIS_DB,
             decode_responses=True
         )
-        # 测试连接
         await app.state.redis.ping()
         logger.info(f"✅ Redis 连接成功：{settings.REDIS_HOST}:{settings.REDIS_PORT}")
     except Exception as e:
@@ -49,15 +49,14 @@ async def lifespan(app: FastAPI):
         await akshare_service.init()
         logger.info("✅ AKShare 服务初始化成功")
     except Exception as e:
-        logger.warning(f"⚠️ AKShare 服务初始化失败：{e}")
+        logger.error(f"❌ AKShare 服务初始化失败：{e}")
     
     logger.info("🎉 服务启动完成")
     
     yield
     
     # 关闭时清理
-    logger.info("👋 正在关闭服务...")
-    
+    logger.info("🛑 正在关闭服务...")
     if app.state.redis:
         await app.state.redis.close()
         logger.info("✅ Redis 连接已关闭")
@@ -65,8 +64,8 @@ async def lifespan(app: FastAPI):
 
 # 创建 FastAPI 应用
 app = FastAPI(
-    title="量化交易平台 API",
-    description="提供股票行情、技术指标、AI 建议、财经新闻等数据服务",
+    title="QCLaw 量化交易平台",
+    description="基于 AI 的智能量化分析系统",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -74,75 +73,56 @@ app = FastAPI(
 # 配置 CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# 注册路由 - 新增 API
+app.include_router(market_router, prefix="/api/market", tags=["市场数据"])
+app.include_router(health_router, prefix="/api", tags=["健康检查"])
+app.include_router(advice_router, prefix="/api/advice", tags=["AI 建议"])
+app.include_router(dl_models_router, tags=["深度学习 - 模型管理"])
+app.include_router(dl_predict_router, tags=["深度学习 - 预测"])
 
-# 健康检查
-@app.get("/health")
-async def health_check():
-    """健康检查接口"""
-    redis_status = "connected" if app.state.redis else "disconnected"
-    return {
-        "status": "healthy",
-        "version": "1.0.0",
-        "redis": redis_status
-    }
-
-
-# 注册路由
-app.include_router(market.router, prefix="/api/market", tags=["行情数据"])
+# 注册路由 - 原有 API
 app.include_router(indicators.router, prefix="/api/indicators", tags=["技术指标"])
-app.include_router(advice.router, prefix="/api/advice", tags=["AI 建议"])
 app.include_router(news.router, prefix="/api/news", tags=["财经新闻"])
 app.include_router(deep_learning.router, prefix="/api/v1/dl", tags=["深度学习"])
 
 
-# 根路径
 @app.get("/")
 async def root():
-    """API 根路径"""
+    """根路径"""
     return {
-        "message": "欢迎使用量化交易平台 API",
-        "docs": "/docs",
-        "health": "/health"
+        "name": "QCLaw 量化交易平台",
+        "version": "1.0.0",
+        "status": "running"
     }
 
 
-# 全局异常处理
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
-    """HTTP 异常处理"""
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={
-            "error": exc.detail,
-            "path": str(request.url.path)
-        }
-    )
-
-
-@app.exception_handler(Exception)
-async def general_exception_handler(request, exc):
-    """通用异常处理"""
-    logger.error(f"未处理的异常：{exc}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error": "服务器内部错误",
-            "path": str(request.url.path)
-        }
-    )
+@app.get("/api")
+async def api_info():
+    """API 信息"""
+    return {
+        "name": "QCLaw API",
+        "version": "1.0.0",
+        "endpoints": [
+            "/api/health - 健康检查",
+            "/api/market/indices - 大盘指标",
+            "/api/advice - AI 建议",
+            "/api/v1/dl/models - 模型列表",
+            "/api/v1/dl/predict - 模型预测"
+        ]
+    }
 
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "main:app",
-        host=settings.HOST,
-        port=settings.PORT,
-        reload=settings.DEBUG
+        "main_new:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True
     )
