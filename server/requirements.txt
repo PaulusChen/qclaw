@@ -3,6 +3,10 @@ fastapi>=0.109.0
 uvicorn[standard]>=0.27.0
 pydantic>=2.5.0
 pydantic-settings>=2.1.0
+pydantic[email]>=2.5.0
+
+# 数据库
+sqlalchemy>=2.0.0
 
 # Redis 缓存
 redis>=5.0.0
@@ -17,3 +21,12 @@ httpx>=0.26.0
 # 工具库
 python-dotenv>=1.0.0
 python-multipart>=0.0.6
+
+# 认证
+passlib[bcrypt]>=1.7.4
+python-jose[cryptography]>=3.3.0
+
+# 深度学习
+torch
+torchvision
+onnxruntime

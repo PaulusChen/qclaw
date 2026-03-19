@@ -3,12 +3,19 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Configure proxy for npm access (Clash proxy)
+# Docker network: 10.1.0.0/16, Physical network: 192.168.50.0/24 (direct access)
+ENV HTTP_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+ENV HTTPS_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+ENV NO_PROXY=localhost,127.0.0.1,10.1.0.0/16,192.168.50.0/24,*.paulchen.cn
+
 # Copy package files
 COPY webui/package*.json ./webui/
 
 # Install dependencies
 WORKDIR /app/webui
-RUN npm ci
+# Use Taobao npm mirror for faster downloads in China
+RUN npm config set registry https://registry.npmmirror.com && npm ci
 
 # Copy application code
 COPY webui/ ./
@@ -17,9 +24,12 @@ COPY webui/ ./
 RUN npm run build
 
 # Use nginx to serve static files
-FROM nginx:alpine
+FROM nginx:latest
+# Copy built files
 COPY --from=0 /app/webui/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy custom nginx config (overwrites default)
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Use exec form to avoid shell issues
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

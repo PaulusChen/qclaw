@@ -7,15 +7,20 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "0.0.0.0:8000:8000"
     environment:
+      - HTTP_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+      - HTTPS_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+      - NO_PROXY=localhost,127.0.0.1,10.0.0.0/16,192.168.50.0/24,*.paulchen.cn
       - REDIS_URL=redis://redis:6379
-      - DATABASE_URL=sqlite:///app/data/qclaw.db
+      - DATABASE_URL=sqlite:////app/data/qclaw.db
     volumes:
       - ./data:/app/data
     depends_on:
       - redis
-    command: uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - qclaw-network
 
   # 前端服务
   frontend:
@@ -23,17 +28,21 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     ports:
-      - "3000:80"
+      - "0.0.0.0:80:80"
     depends_on:
       - api
+    networks:
+      - qclaw-network
 
   # Redis 缓存
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "0.0.0.0:6379:6379"
     volumes:
       - redis_data:/data
+    networks:
+      - qclaw-network
 
   # 测试服务（CI 使用）
   test:
@@ -41,11 +50,24 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
+      - HTTP_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+      - HTTPS_PROXY=http://clash:bH8qpf@192.168.50.106:7890
+      - NO_PROXY=localhost,127.0.0.1,10.0.0.0/16,192.168.50.0/24,*.paulchen.cn
       - REDIS_URL=redis://redis:6379
       - TESTING=true
     depends_on:
       - redis
-    command: pytest tests/ -v --cov=src --cov-report=xml
+    command: python -m pytest tests/ -v --cov=src --cov-report=xml
+    networks:
+      - qclaw-network
 
 volumes:
   redis_data:
+
+networks:
+  qclaw-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.0.0/16
+          gateway: 10.1.0.1

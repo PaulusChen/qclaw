@@ -3,11 +3,11 @@ import React from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
-  BrainOutlined,
   PlayCircleOutlined,
   RocketOutlined,
   DatabaseOutlined,
   FolderOutlined,
+  ApiOutlined,
 } from '@ant-design/icons';
 
 const DeepLearningLayout: React.FC = () => {
@@ -42,7 +42,7 @@ const DeepLearningLayout: React.FC = () => {
       <div className="w-56 bg-white border-r border-gray-200 min-h-screen">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
-            <BrainOutlined style={{ fontSize: 24, color: '#722ed1' }} />
+            <ApiOutlined style={{ fontSize: 24, color: '#722ed1' }} />
             <span className="text-lg font-bold" style={{ color: '#722ed1' }}>深度学习</span>
           </div>
         </div>

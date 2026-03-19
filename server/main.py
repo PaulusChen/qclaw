@@ -12,9 +12,11 @@ import redis.asyncio as redis
 import logging
 
 from config.settings import settings
-from server.api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
-from server.api import indicators, news, deep_learning
+from api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
+from api import indicators, news, deep_learning
+from api import auth, dashboard_config
 from services import akshare_service, cache_service
+from database import init_db
 
 # 配置日志
 logging.basicConfig(
@@ -29,6 +31,13 @@ async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     # 启动时初始化
     logger.info("🚀 正在启动量化交易平台后端服务...")
+    
+    # 初始化数据库
+    try:
+        init_db()
+        logger.info("✅ 数据库初始化成功")
+    except Exception as e:
+        logger.error(f"❌ 数据库初始化失败：{e}")
     
     # 初始化 Redis 连接
     try:
@@ -90,6 +99,10 @@ app.include_router(dl_predict_router, tags=["深度学习 - 预测"])
 app.include_router(indicators.router, prefix="/api/indicators", tags=["技术指标"])
 app.include_router(news.router, prefix="/api/news", tags=["财经新闻"])
 app.include_router(deep_learning.router, prefix="/api/v1/dl", tags=["深度学习"])
+
+# 注册路由 - 用户系统
+app.include_router(auth.router)
+app.include_router(dashboard_config.router)
 
 
 @app.get("/")

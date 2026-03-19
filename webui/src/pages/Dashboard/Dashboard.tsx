@@ -39,17 +39,25 @@ const Dashboard: React.FC = () => {
       }
       const data = await response.json()
       
-      // 确保 data 是数组
-      const dataArray = Array.isArray(data) ? data : (data.data || data.indices || [])
+      // 处理 API 返回的数据格式：{ indices: { shanghai: {...}, shenzhen: {...}, ... } }
+      let indicesData: any[] = []
+      if (data.indices && typeof data.indices === 'object') {
+        // 将对象转换为数组
+        indicesData = Object.values(data.indices)
+      } else if (Array.isArray(data)) {
+        indicesData = data
+      } else if (data.data) {
+        indicesData = Array.isArray(data.data) ? data.data : Object.values(data.data)
+      }
       
       // 更新指数数据
       setIndices(prev => prev.map(index => {
-        const marketData = dataArray.find((d: any) => 
-          d.symbol === index.symbol || d.name === index.name
+        const marketData = indicesData.find((d: any) => 
+          d.code === index.symbol || d.symbol === index.symbol || d.name === index.name
         )
         return marketData ? {
           ...index,
-          current: marketData.current || marketData.price || 0,
+          current: marketData.current || marketData.price || marketData.value || 0,
           change: marketData.change || 0,
           changePercent: marketData.changePercent || 0,
           open: marketData.open || index.open,

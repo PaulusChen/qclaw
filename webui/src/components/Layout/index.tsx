@@ -9,7 +9,7 @@ import {
   DashboardOutlined,
   LineChartOutlined,
   FileTextOutlined,
-  BrainOutlined,
+  RocketOutlined,
   ExperimentOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
@@ -35,7 +35,7 @@ const Layout: React.FC = () => {
     },
     {
       key: '/deep-learning',
-      icon: <BrainOutlined />,
+      icon: <RocketOutlined />,
       label: <Link to="/deep-learning">深度学习</Link>,
     },
     {

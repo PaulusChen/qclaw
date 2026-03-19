@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
     
     # Redis 配置
-    REDIS_HOST: str = "localhost"
+    REDIS_HOST: str = "redis"  # Docker 中使用服务名
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
     

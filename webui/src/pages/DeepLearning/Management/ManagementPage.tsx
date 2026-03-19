@@ -26,13 +26,13 @@ import {
   PauseCircleOutlined,
   DownloadOutlined,
   UploadOutlined,
-  CompareOutlined,
   DeleteOutlined,
+  SwapOutlined,
   FileTextOutlined,
   EyeOutlined,
   CheckCircleOutlined,
-  ArchiveOutlined,
   ThunderboltOutlined,
+  FolderOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -135,7 +135,7 @@ const ManagementPage: React.FC = () => {
   const getStatusTag = (status: string) => {
     const statusMap: Record<string, { color: string; text: string; icon: React.ReactNode }> = {
       active: { color: 'green', text: '激活', icon: <CheckCircleOutlined /> },
-      archived: { color: 'default', text: '归档', icon: <ArchiveOutlined /> },
+      archived: { color: 'default', text: '归档', icon: <FolderOutlined /> },
       deleted: { color: 'red', text: '已删除', icon: <DeleteOutlined /> },
     };
     const config = statusMap[status] || statusMap.archived;
@@ -247,7 +247,7 @@ const ManagementPage: React.FC = () => {
             <Button
               type="link"
               size="small"
-              icon={<ArchiveOutlined />}
+              icon={<FolderOutlined />}
               onClick={() => handleArchive(record.version)}
             >
               归档
@@ -322,7 +322,7 @@ const ManagementPage: React.FC = () => {
             上传模型
           </Button>
           <Button
-            icon={<CompareOutlined />}
+            icon={<SwapOutlined />}
             type="primary"
             onClick={handleCompare}
             disabled={comparingModels.length < 2}
@@ -533,7 +533,7 @@ const ManagementPage: React.FC = () => {
       <Modal
         title={
           <Space>
-            <CompareOutlined />
+            <SwapOutlined />
             <span>模型性能对比</span>
           </Space>
         }
