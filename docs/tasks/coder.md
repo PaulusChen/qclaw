@@ -50,6 +50,156 @@
 
 ## 🔴 紧急 Bug 修复 (来自 Tester)
 
+### CODE-BUG-005: Integration 测试 LRU 缓存实现修复
+**优先级:** 🔥 **P1 (高)**  
+**来源:** qclaw-tester (2026-03-20 05:30/07:38 检查)  
+**依赖:** 无  
+**交付物:** 修复后的缓存实现代码  
+**状态:** 🔄 待修复
+
+**问题描述:**
+Integration 测试中 5 个缓存相关测试失败，主要问题集中在 LRU 缓存实现和性能未达预期。
+
+**失败测试:**
+1. `test_cache_lru_eviction`: 缓存驱逐逻辑错误
+2. `test_pipeline_cache_hit`: 对象比较应使用值比较而非 `is`
+3. `test_cache_performance`: 加速比 1.44x < 5x 预期
+4. `test_parallel_performance`: 加速比 0.02x (性能退化而非提升)
+5. `test_end_to_end_workflow`: 返回 None 而非 DataFrame
+
+**修复方案:**
+- 检查 `src/data/pipeline_optimized.py` 中 LRUCache 类的驱逐逻辑
+- 修复缓存命中测试中的对象比较 (`is` → `==` 或 `.equals()`)
+- 优化缓存性能，目标加速比 > 3x
+- 修复并行处理逻辑，确保性能提升而非退化
+- 确保端到端工作流返回正确的 DataFrame
+
+**验收标准:**
+- [ ] 5 个 Integration 缓存测试全部通过
+- [ ] 缓存加速比 > 3x
+- [ ] 并行处理性能提升 > 1.5x
+
+---
+
+### CODE-BUG-006: System 测试数据文件准备
+**优先级:** 🔥 **P1 (高)**  
+**来源:** qclaw-tester (2026-03-20 05:30/07:38 检查)  
+**依赖:** 无  
+**交付物:** 测试数据文件  
+**状态:** 🔄 待修复
+
+**问题描述:**
+System 测试缺少必要的测试数据文件，导致 5 个测试失败。
+
+**缺少文件:**
+- `data/real/600519_贵州茅台.csv` - 贵州茅台股票历史数据
+- `checkpoints/lstm_real_600519.pth` - LSTM 模型检查点
+
+**影响测试:**
+- `test_data_loading`: 数据加载测试
+- `test_model_loading`: 模型加载测试
+- `test_data_quality`: 数据质量检查
+- `test_model_performance`: 模型性能测试
+- `test_prediction_accuracy`: 预测准确率测试
+
+**修复方案:**
+- 使用 yfinance 下载 600519.SS (贵州茅台) 历史数据
+- 保存为 `data/real/600519_贵州茅台.csv`
+- 训练或创建一个简单的 LSTM 模型检查点，或跳过模型相关测试
+
+**验收标准:**
+- [ ] 数据文件存在且格式正确
+- [ ] 5 个 System 测试全部通过 (或合理跳过)
+
+---
+
+### CODE-BUG-007: System 测试健康检查端点修复
+**优先级:** 🔥 **P1 (高)**  
+**来源:** qclaw-tester (2026-03-20 05:30/07:38 检查)  
+**依赖:** 无  
+**交付物:** 修复后的测试或 API 端点  
+**状态:** 🔄 待修复
+
+**问题描述:**
+System 测试期望 `/health` 端点，但 API 实际健康检查在 `/` 端点。
+
+**失败测试:**
+- `test_api_health_endpoint`: API 返回 404 (期望 /health 但实际在 /)
+
+**修复方案 (二选一):**
+1. **添加 `/health` 端点** - 在 `server/api/health.py` 或 `server/main.py` 中添加 `/health` 路由
+2. **更新测试** - 修改 `tests/system/test_api_health.py` 使用 `/` 端点
+
+**推荐:** 方案 1 (添加 `/health` 端点更符合 REST API 规范)
+
+**验收标准:**
+- [ ] `GET /health` 返回健康状态
+- [ ] `test_api_health_endpoint` 测试通过
+
+---
+
+### CODE-BUG-008: Unit 测试 API 响应格式修复
+**优先级:** 🔥 **P1 (高)**  
+**来源:** qclaw-tester (2026-03-20 05:30/07:38 检查)  
+**依赖:** 无  
+**交付物:** 修复后的 API 响应  
+**状态:** 🔄 待修复
+
+**问题描述:**
+2 个 Unit 测试失败，原因是 API 响应格式不符合测试预期。
+
+**失败测试:**
+1. `test_list_models`: 响应缺少 `timestamp` 字段
+2. `test_predict_stock_price`: 404 Not Found (端点不存在)
+
+**修复方案:**
+1. **test_list_models**: 在模型列表响应中添加 `timestamp` 字段
+2. **test_predict_stock_price**: 
+   - 检查端点路由是否正确注册
+   - 或更新测试使用正确的端点路径
+
+**验收标准:**
+- [ ] `test_list_models` 通过 (响应包含 timestamp)
+- [ ] `test_predict_stock_price` 通过 (端点可访问)
+
+---
+
+### CODE-BUG-009: E2E 测试 UI 选择器修复
+**优先级:** 🔥 **P1 (高)**  
+**来源:** qclaw-tester (2026-03-20 05:30/07:38 检查)  
+**依赖:** 无  
+**交付物:** 修复后的前端组件或测试选择器  
+**状态:** 🔄 待修复
+
+**问题描述:**
+E2E 测试 (test_user_flows_updated.py) 中 5 个测试失败，原因是前端页面缺少预期的 CSS 类名。
+
+**失败测试:**
+1. `test_homepage_shows_market_indices`: 找不到 `.market-indices, .market-card, .index` 元素
+2. `test_view_ai_advice`: 找不到 `.ai-advice, .advice, .prediction` 元素
+3. `test_news_list_loads`: 找不到 `.news-list, .news-item, article` 元素
+4. `test_technical_indicators_load`: 找不到 `.indicator, .chart, .macd, .kdj, .rsi` 元素
+5. `test_page_has_title`: strict mode violation (找到 3 个 h1/title 元素)
+
+**修复方案 (二选一):**
+1. **添加 CSS 类名到前端组件** - 在对应的 Vue/React 组件中添加测试所需的类名
+2. **更新测试选择器** - 修改 E2E 测试使用现有的 CSS 类名或 data-testid
+
+**推荐:** 方案 1 (添加 data-testid 属性更规范)
+
+**影响文件:**
+- `webui/src/pages/Dashboard/Dashboard.vue` 或 `.tsx`
+- `webui/src/pages/Market/MarketCard.vue` 或 `.tsx`
+- `webui/src/pages/Advice/AIAdvice.vue` 或 `.tsx`
+- `webui/src/pages/News/NewsList.vue` 或 `.tsx`
+- `webui/src/pages/Indicators/IndicatorChart.vue` 或 `.tsx`
+
+**验收标准:**
+- [ ] 5 个 E2E 测试全部通过
+- [ ] 前端组件添加适当的 data-testid 或 CSS 类名
+
+---
+
 ### CODE-BUG-001: Unit 测试导入路径修复 ✅
 **优先级:** 🔥 **P0 (最高)**  
 **来源:** qclaw-tester (2026-03-20 00:03 检查)  
