@@ -10,7 +10,7 @@ import logging
 import httpx
 
 from config.settings import settings
-from services import cache_service
+from server.services import cache_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

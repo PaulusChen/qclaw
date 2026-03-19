@@ -12,11 +12,11 @@ import redis.asyncio as redis
 import logging
 
 from config.settings import settings
-from api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
-from api import indicators, news, deep_learning
-from api import auth, dashboard_config
-from services import akshare_service, cache_service
-from database import init_db
+from server.api import market_router, health_router, advice_router, dl_models_router, dl_predict_router
+from server.api import indicators, news, deep_learning
+from server.api import auth, dashboard_config
+from server.services import akshare_service, cache_service
+from server.database import init_db
 
 # 配置日志
 logging.basicConfig(
