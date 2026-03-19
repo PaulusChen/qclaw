@@ -77,7 +77,7 @@ class TestAPIErrorHandling:
 class TestFrontendErrorHandling:
     """前端异常处理测试"""
     
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "http://localhost:80"
     
     def test_frontend_handles_api_error(self):
         """测试前端处理 API 错误"""

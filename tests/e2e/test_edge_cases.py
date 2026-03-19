@@ -69,7 +69,7 @@ class TestAPIEdgeCases:
 class TestFrontendEdgeCases:
     """前端边界条件测试"""
     
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "http://localhost:80"
     
     def test_frontend_loads_within_timeout(self):
         """测试前端在超时时间内加载"""
