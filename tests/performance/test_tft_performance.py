@@ -84,7 +84,8 @@ class TestTFTPerformance:
             else:
                 target_tensor = targets
             
-            # 使用模型的 loss 计算
+            # Handle pytorch-forecasting output for loss calculation
+            # The model.loss() expects the raw output
             loss = model.loss(output, target_tensor)
             loss.backward()
             optimizer.step()
@@ -135,6 +136,11 @@ class TestTFTPerformance:
                 
                 start_time = time.time()
                 output = model(inputs)
+                # Handle pytorch-forecasting output (may be namedtuple or dict)
+                if hasattr(output, 'prediction'):
+                    _ = output.prediction
+                elif isinstance(output, (tuple, list)):
+                    _ = output[0]
                 elapsed_time = time.time() - start_time
                 
                 latencies.append(elapsed_time * 1000)  # 转换为 ms
@@ -247,12 +253,22 @@ class TestTFTPerformance:
                 inputs, targets = batch
                 output = model(inputs)
                 
+                # Handle pytorch-forecasting output (may be namedtuple or dict)
+                if hasattr(output, 'prediction'):
+                    output_tensor = output.prediction
+                elif isinstance(output, (tuple, list)):
+                    output_tensor = output[0]
+                elif hasattr(output, 'squeeze'):
+                    output_tensor = output
+                else:
+                    output_tensor = torch.tensor(output)
+                
                 # output shape: (batch_size, prediction_length, output_size)
                 # 取第一步预测
-                if len(output.shape) >= 2:
-                    pred_values = output[:, 0, 0] if output.dim() == 3 else output[:, 0]
+                if len(output_tensor.shape) >= 2:
+                    pred_values = output_tensor[:, 0, 0] if output_tensor.dim() == 3 else output_tensor[:, 0]
                 else:
-                    pred_values = output
+                    pred_values = output_tensor
                 
                 if isinstance(targets, (list, tuple)):
                     target_tensor = targets[0]

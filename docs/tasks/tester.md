@@ -259,15 +259,19 @@
 
 ---
 
-### 2026-03-19 21:03 - 任务推进检查 (Cron 自动执行)
+### 2026-03-19 23:03 - 任务推进检查 (Cron 自动执行)
 
 **执行内容:**
-- [x] 检查 Docker 容器状态 ✅ (API/Frontend/Redis 全部运行中)
-- [x] 验证 API 健康检查 ✅ (服务正常响应)
+- [x] 检查 Docker 容器状态 ✅ (API/Frontend/Redis 全部运行中，已运行 2 小时)
+- [x] 验证 API 健康检查 ✅ (`{"name":"QCLaw 量化交易平台","version":"1.0.0","status":"running"}`)
 - [x] 验证 Frontend 服务 ✅ (HTML 正常返回)
-- [x] 尝试启动浏览器验证 CODE-009 ❌ (浏览器工具不可用)
-- [x] 尝试运行 Unit 测试 ❌ (依赖缺失 - 需安装 server/requirements.txt)
-- [x] 识别 E2E 端口配置问题 ✅ (localhost:3000 → localhost:80)
+- [x] 执行 Functional 测试 ✅ (5/5 通过，100%)
+- [x] 尝试执行 Integration 测试 ❌ (收集错误 - 缺少 pipeline_optimized.py 文件)
+- [x] 尝试执行 Unit 测试 ❌ (导入错误 - ModuleNotFoundError: No module named 'api')
+- [x] 尝试执行 E2E 测试 ❌ (端口配置错误 - localhost:3000 vs localhost:80)
+- [x] 尝试执行 System 测试 ❌ (语法错误 - test_load_stress.py:161 缩进错误)
+- [x] 尝试执行 Performance 测试 ⚠️ (10/20 通过，50% - 端口+TFT 代码错误)
+- [x] 检查浏览器工具 ❌ (不可用，无法验证 CODE-009)
 
 **当前状态:**
 
@@ -278,39 +282,62 @@
 | Redis | ✅ 运行中 | 6379 | 连接正常 |
 | 浏览器 | ❌ 不可用 | - | 无法验证 CODE-009 |
 
+**测试结果:**
+
+| 测试套件 | 通过 | 失败 | 通过率 | 状态 |
+|---------|------|------|--------|------|
+| Functional | 5 | 0 | 100% | ✅ 完美 |
+| Integration | - | - | - | ❌ 收集错误 (缺少文件) |
+| Unit | 0 | 0 | - | ❌ 导入错误 |
+| System | - | - | - | ❌ 语法错误 |
+| E2E | - | - | - | ❌ 端口配置错误 |
+| Performance | 10 | 10 | 50% | ⚠️ 部分通过 |
+
 **待修复问题 (通知 qclaw-coder):**
 
 **P0 阻塞问题:**
 1. **E2E 测试端口配置错误**
-   - 文件：`tests/e2e/test_user_flows.py`, `tests/e2e/test_edge_cases.py`, `tests/e2e/test_error_handling.py`
+   - 文件：`tests/e2e/test_user_flows.py` (18 处 `localhost:3000`)
    - 问题：测试使用 `localhost:3000`，实际前端运行在 `localhost:80`
    - 影响：46 个 E2E 测试失败
    - 修复：将所有 frontend URL 从 `localhost:3000` 改为 `localhost:80`
 
-2. **Unit 测试依赖缺失**
-   - 问题：server/venv 缺少 fastapi 等依赖
+2. **Unit 测试导入路径错误**
+   - 错误：`ModuleNotFoundError: No module named 'api'`
+   - 位置：`server/main.py` 导入 `from api import ...`
    - 影响：4 个 API 单元测试无法执行
-   - 修复：在 server/venv 中安装 `pip install -r server/requirements.txt pytest pytest-mock`
-   - 或：更新 pytest.ini 添加 `PYTHONPATH=server`
+   - 修复：更新 pytest.ini 添加 `PYTHONPATH=server` 或修复导入路径
+
+3. **Integration 测试缺少文件**
+   - 缺少：`src/data/pipeline_optimized.py`
+   - 影响：test_pipeline_optimized.py 无法收集
 
 **P1 问题:**
-3. **System 测试缺少数据文件**
+4. **System 测试语法错误**
+   - 文件：`tests/system/test_load_stress.py:161`
+   - 问题：缩进错误 (`raise` 语句缩进过多)
+   - 影响：System 测试无法执行
+
+5. **System 测试缺少数据文件**
    - 缺少：`data/real/600519_贵州茅台.csv`, `checkpoints/lstm_real_600519.pth`
    - 影响：test_full_pipeline.py 全部失败
 
-4. **TFT 性能测试代码错误**
+6. **TFT 性能测试代码错误**
    - TypeError: tuple indices must be integers or slices, not tuple
-   - 影响：performance 测试 50% 失败
+   - AttributeError: 'Output' object has no attribute 'shape'
+   - 位置：`tests/performance/test_tft_performance.py`
+   - 影响：3 个 TFT 测试失败
 
 **P2 问题:**
-5. **语法错误**
-   - 文件：`tests/system/test_load_stress.py:161`
-   - 问题：缩进错误
+7. **Performance 测试端口错误**
+   - 文件：`tests/performance/test_baseline.py`, `tests/performance/test_perf_001.py`
+   - 问题：前端 URL 使用 `localhost:3000` 而非 `localhost:80`
+   - 影响：5 个性能测试失败
 
 **下一步行动:**
-1. 🔴 **等待 qclaw-coder 修复 P0 问题**
+1. 🔴 **通知 qclaw-coder 修复 P0 问题** (E2E 端口 + Unit 导入 + 缺失文件)
 2. ⏳ 浏览器恢复后验证 CODE-009 UI Bug
-3. ⏳ P0 修复后重新执行 E2E + Unit 测试
-4. ⏳ 准备测试数据文件
+3. ⏳ P0 修复后重新执行 E2E + Unit + Integration 测试
+4. ⏳ 准备测试数据文件 (System 测试)
 
-**状态:** 🔄 阻塞中 - 等待 Coder 修复
+**状态:** 🔄 阻塞中 - 等待 Coder 修复 P0 问题

@@ -23,7 +23,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 class TestFrontendPerformance:
     """前端性能测试"""
     
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "http://localhost:80"
     
     def test_frontend_load_time(self):
         """测试前端加载时间 - 目标 < 3s"""
@@ -228,7 +228,7 @@ class TestSystemResources:
 class TestChartRendering:
     """图表渲染性能测试"""
     
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "http://localhost:80"
     
     def test_chart_render_time(self):
         """测试图表渲染时间 - 目标 < 1s

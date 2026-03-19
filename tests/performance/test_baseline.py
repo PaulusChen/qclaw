@@ -83,7 +83,7 @@ class TestAPIPerformance:
 class TestFrontendPerformance:
     """前端性能测试"""
     
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "http://localhost:80"
     
     def test_frontend_load_time(self):
         """测试前端加载时间"""
