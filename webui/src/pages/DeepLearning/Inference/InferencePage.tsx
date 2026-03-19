@@ -86,9 +86,10 @@ const InferencePage: React.FC = () => {
   const loadModels = async () => {
     try {
       const response = await inferenceApi.getModels();
-      setModels(response.models);
+      const modelsArray = Array.isArray(response.models) ? response.models : [];
+      setModels(modelsArray);
       // 默认选择激活的模型
-      const activeModel = response.models.find(m => m.is_active);
+      const activeModel = modelsArray.find(m => m.is_active);
       if (activeModel) {
         form.setFieldValue('model_version', activeModel.version);
       }
