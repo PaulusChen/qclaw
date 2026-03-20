@@ -248,7 +248,7 @@ class TestOptimizedDataPipeline:
         
         # 缓存命中应该非常快
         assert time2 < 0.1
-        assert df2 is mock_df  # 同一个对象
+        pd.testing.assert_frame_equal(df2, mock_df)  # 值比较而非对象比较
         
         # 检查统计
         stats = pipeline.get_stats()

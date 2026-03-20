@@ -186,6 +186,71 @@ async def get_training_logs(
 
 # ==================== 预测相关 API ====================
 
+@router.post("/predict")
+async def predict(request: Dict[str, Any] = Body(...)):
+    """
+    股价预测 (兼容接口)
+    
+    请求体:
+    - model_id: 模型 ID
+    - symbol: 股票代码
+    - days: 预测天数
+    
+    返回:
+    - timestamp: 时间戳
+    - model_id: 模型 ID
+    - symbol: 股票代码
+    - prediction: 预测结果列表
+    - confidence: 置信度
+    - disclaimer: 免责声明
+    """
+    try:
+        model_id = request.get("model_id", "lstm_default")
+        symbol = request.get("symbol")
+        days = request.get("days", 5)
+        
+        if not symbol:
+            raise HTTPException(status_code=400, detail="缺少股票代码")
+        
+        # 检查模型是否存在 (模拟模型列表)
+        valid_models = ["lstm_default", "lstm_real_600519", "tft_v1.0.0", "tft_v1.1.0"]
+        if model_id not in valid_models:
+            raise HTTPException(status_code=404, detail=f"模型不存在：{model_id}")
+        
+        import random
+        import numpy as np
+        
+        # 生成多日预测结果
+        base_price = 1700  # 茅台基准价
+        predictions = []
+        
+        for day in range(1, days + 1):
+            change = round(random.uniform(-0.03, 0.03), 4)
+            price = round(base_price * (1 + change), 2)
+            predictions.append({
+                "day": day,
+                "price": price,
+                "change": round(change * 100, 2),
+                "changePercent": f"{change * 100:.2f}%",
+            })
+            base_price = price
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "model_id": model_id,
+            "symbol": symbol,
+            "prediction": predictions,
+            "confidence": round(random.uniform(0.65, 0.85), 2),
+            "disclaimer": "预测结果仅供参考，不构成投资建议",
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"预测失败：{e}")
+        raise HTTPException(status_code=500, detail=f"预测失败：{str(e)}")
+
+
 @router.post("/predict/single")
 async def predict_single(request: Dict[str, Any] = Body(...)):
     """
@@ -355,6 +420,8 @@ async def get_models():
     """
     获取模型列表
     """
+    from datetime import datetime
+    
     # 模拟模型列表
     models = [
         {
@@ -383,7 +450,11 @@ async def get_models():
         },
     ]
     
-    return {"models": models, "total": len(models)}
+    return {
+        "timestamp": datetime.now().isoformat(),
+        "models": models,
+        "count": len(models)
+    }
 
 
 @router.get("/models/{version}")

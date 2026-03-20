@@ -55,10 +55,10 @@
 
     <!-- 新闻列表 -->
     <div v-else class="news-list">
-      <div 
+      <article
         v-for="news in newsList" 
         :key="news.id"
-        class="news-item"
+        class="news-item article"
         :class="{ 
           'is-important': news.importance >= 4,
           'is-read': news.id === readNewsId
@@ -127,7 +127,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </article>
 
       <!-- 分页控件 - E2E 测试选择器 -->
       <div v-if="hasMore" class="pagination">

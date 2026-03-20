@@ -1,6 +1,6 @@
 <template>
   <!-- AI 建议区域 - E2E 测试选择器 -->
-  <div class="ai-advice">
+  <div class="ai-advice advice prediction">
     <!-- 标题栏 -->
     <div class="advice-header">
       <h3 class="advice-title">

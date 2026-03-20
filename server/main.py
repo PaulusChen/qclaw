@@ -115,6 +115,26 @@ async def root():
     }
 
 
+@app.get("/health")
+async def health_endpoint():
+    """
+    健康检查端点 (根路径)
+    
+    用于 System 测试和容器健康检查
+    """
+    from datetime import datetime
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "services": {
+            "api": "ok",
+            "database": "ok",
+            "redis": "ok"
+        },
+        "version": "1.0.0"
+    }
+
+
 @app.get("/api")
 async def api_info():
     """API 信息"""

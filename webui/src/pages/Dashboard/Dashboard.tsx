@@ -164,18 +164,20 @@ const Dashboard: React.FC = () => {
       )}
 
       {/* 指数卡片 */}
-      <Row gutter={[24, 24]}>
-        {indices.map((index) => (
-          <Col xs={24} sm={12} lg={6} key={index.key}>
-            <Card 
-              hoverable
-              style={{ 
-                height: '100%',
-                borderLeft: `4px solid ${
-                  (index.change || 0) >= 0 ? '#cf1322' : '#3f8600'
-                }`
-              }}
-            >
+      <div className="market-indices">
+        <Row gutter={[24, 24]}>
+          {indices.map((index) => (
+            <Col xs={24} sm={12} lg={6} key={index.key}>
+              <Card 
+                className="market-card index"
+                hoverable
+                style={{ 
+                  height: '100%',
+                  borderLeft: `4px solid ${
+                    (index.change || 0) >= 0 ? '#cf1322' : '#3f8600'
+                  }`
+                }}
+              >
               <Space direction="vertical" style={{ width: '100%' }} size="small">
                 <div style={{ fontSize: '16px', fontWeight: 600, color: '#262626' }}>
                   {renderTrendIcon(index.change)} {index.name}
@@ -211,7 +213,8 @@ const Dashboard: React.FC = () => {
             </Card>
           </Col>
         ))}
-      </Row>
+        </Row>
+      </div>
 
       {/* 最后更新时间 */}
       <div style={{ 

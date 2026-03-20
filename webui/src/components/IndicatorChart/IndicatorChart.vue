@@ -1,9 +1,10 @@
 <template>
   <!-- 技术指标区域 - E2E 测试选择器 -->
   <div 
-    class="technical-indicators"
+    class="technical-indicators indicator chart"
     :class="[
       `indicator-${selectedIndicator}`,
+      selectedIndicator,  // 添加 macd/kdj/rsi 类名
       { 'chart-rendered': !loading && chartInstance !== null }
     ]"
   >
