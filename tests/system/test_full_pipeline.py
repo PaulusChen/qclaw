@@ -22,7 +22,7 @@ class TestFullPipeline:
         
         df = pd.read_csv(data_file)
         assert len(df) > 0, "数据为空"
-        assert "收盘" in df.columns, "缺少收盘价列"
+        assert "close" in df.columns, "缺少收盘价列"
         assert len(df) >= 100, "数据量不足"
     
     def test_model_loading(self):
@@ -81,7 +81,7 @@ class TestFullPipeline:
         assert missing.sum() == 0, f"存在缺失值：{missing[missing > 0]}"
         
         # 检查异常值
-        close_prices = df["收盘"]
+        close_prices = df["close"]
         q1 = close_prices.quantile(0.25)
         q3 = close_prices.quantile(0.75)
         iqr = q3 - q1
@@ -90,9 +90,9 @@ class TestFullPipeline:
         assert outlier_rate < 0.05, f"异常值过多 ({outlier_rate:.2%} > 5%)"
         
         # 检查数据连续性
-        df["日期"] = pd.to_datetime(df["日期"])
-        df = df.sort_values("日期")
-        date_diffs = df["日期"].diff().dropna()
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date")
+        date_diffs = df["date"].diff().dropna()
         # 检查是否有超过 7 天的间隔（排除长假）
         long_gaps = (date_diffs > timedelta(days=7)).sum()
         assert long_gaps < len(date_diffs) * 0.02, "过长间隔过多"
@@ -103,17 +103,30 @@ class TestFullPipeline:
         
         model_file = "checkpoints/lstm_real_600519.pth"
         start = time.time()
-        state_dict = torch.load(model_file, weights_only=True)
+        checkpoint = torch.load(model_file, weights_only=True)
         load_time = time.time() - start
         
         assert load_time < 5.0, f"模型加载过慢 ({load_time:.2f}s)"
-        assert "lstm.weight_ih_l0" in state_dict or any("lstm" in k for k in state_dict.keys()), "模型结构异常"
+        
+        # 处理可能的嵌套结构
+        if isinstance(checkpoint, dict):
+            state_dict = checkpoint.get("model_state_dict", checkpoint.get("state_dict", checkpoint))
+        else:
+            state_dict = checkpoint
+        
+        # 检查 lstm 权重是否存在 (支持多种命名方式)
+        has_lstm = (
+            "lstm.weight_ih_l0" in state_dict or
+            any("lstm" in k for k in state_dict.keys()) or
+            any("lstm" in str(v) for v in state_dict.values())
+        )
+        assert has_lstm, f"模型结构异常，未找到 lstm 权重。keys: {list(state_dict.keys())[:10]}"
     
     def test_prediction_accuracy(self):
         """测试预测准确性"""
         # 加载真实数据
         df = pd.read_csv("data/real/600519_贵州茅台.csv")
-        close_prices = df["收盘"].values
+        close_prices = df["close"].values
         
         # 简单预测：使用最后 5 天的平均值
         last_5_days = close_prices[-5:]

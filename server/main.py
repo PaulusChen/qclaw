@@ -124,12 +124,12 @@ async def health_endpoint():
     """
     from datetime import datetime
     return {
-        "status": "ok",
+        "status": "healthy",
         "timestamp": datetime.now().isoformat(),
         "services": {
-            "api": "ok",
-            "database": "ok",
-            "redis": "ok"
+            "api": "healthy",
+            "database": "healthy",
+            "redis": "healthy"
         },
         "version": "1.0.0"
     }
