@@ -1,7 +1,7 @@
 # Tester 任务列表
 
 **负责人:** qclaw-tester  
-**最后更新:** 2026-03-27 12:22 (🟢 Unit/Integration 全部通过，⚠️ System 23/29 无变化，等待 coder 修复 P1 + 🔴 浏览器工具需重启 Gateway)
+**最后更新:** 2026-03-27 13:24 (🟢 Unit/Integration 全部通过，⚠️ System 23/29 无变化，等待 coder 修复 P1 + 🔴 浏览器工具需重启 Gateway)
 **Cron:** 每小时自动检查 (事件驱动模式)
 
 ---
@@ -1768,6 +1768,56 @@
 6. `test_error_recovery` - success_count 为 0，期望 7
 
 **备注:** 与 08:15 检查结果完全一致，无任何变化。无新 git 提交，coder 尚未推送修复。System 6 个失败原因不变。Docker 容器已稳定运行 82+ 小时。浏览器工具未运行，需重启 Gateway。
+
+**待修复问题 (通知 qclaw-coder):**
+
+**P1 问题 (等待 coder 修复):**
+1. **System 测试数据列名不匹配** 🟠 (3 失败) - 测试期望中文"收盘"，实际数据用英文"close"
+2. **System 测试健康检查端点不匹配** 🟠 (1 失败) - 测试期望`/health`，实际在`/`
+3. **System 测试模型结构检查** 🟠 (1 失败) - 测试在错误层级查找 lstm 权重，应在 `model_state_dict.lstm.weight_ih_l0`
+4. **System 测试错误恢复逻辑** 🟠 (1 失败) - FaultTolerantService 实现问题
+
+**P2 问题:**
+5. **浏览器工具不可用** 🔴 - 需重启 Gateway 后验证 CODE-009
+
+**下一步行动:**
+1. ✅ **Unit + Integration 测试全部通过** - 无需进一步行动
+2. 🔴 **等待 qclaw-coder 修复 System 测试 P1 问题** (6 个失败)
+3. 🔴 **重启 Gateway 以恢复浏览器工具** (阻塞 CODE-009 验证)
+4. ⏳ P1 修复后重新执行 System 测试
+5. ⏳ 浏览器恢复后验证 CODE-009 UI Bug
+
+**状态:** 🟡 稳定无变化 - 等待 coder 修复 P1 问题 + Gateway 重启恢复浏览器工具
+
+---
+
+### 2026-03-27 13:24 - 任务推进检查 (Cron 自动执行) ✅
+
+**执行内容:**
+- [x] 检查 Docker 容器状态 ✅ (API/Frontend/Redis 全部运行中，已运行 3 天)
+- [x] 检查 git 新提交 ✅ (最新：d7e18759 [Tester] 任务检查 (2026-03-27 12:22) - 仅日志，无代码修复)
+- [x] 执行 Unit 测试 ✅ (9/9 通过，100%)
+- [x] 执行 Integration 测试 ✅ (62/62 通过，100%)
+- [x] 执行 System 测试 ⚠️ (23/29 通过，79.3%) - 6 失败，与上次一致
+- [x] 检查浏览器工具 ❌ (未运行 - **Gateway 需重启**)
+
+**测试结果 (2026-03-27 13:24):**
+
+| 测试套件 | 通过 | 失败 | 跳过 | 通过率 | 状态 |
+|---------|------|------|------|--------|------|
+| Unit | 9 | 0 | 0 | 100% | ✅ 完美 |
+| Integration | 62 | 0 | 8 | 100% | ✅ 完美 |
+| System | 23 | 6 | 10 | 79.3% | ⚠️ 部分通过 |
+
+**System 测试 6 个失败 (与 12:22 完全一致，无新变化):**
+1. `test_api_health_endpoint` - `/health` 返回 404 (实际在 `/`)
+2. `test_data_loading` - 缺少 "收盘" 列 (数据用英文 "close")
+3. `test_data_quality` - KeyError: '收盘'
+4. `test_model_performance` - lstm 权重查找层级错误 (在 `model_state_dict` 内层查找)
+5. `test_prediction_accuracy` - KeyError: '收盘'
+6. `test_error_recovery` - success_count 为 0，期望 7
+
+**备注:** 与 12:22 检查结果完全一致，无任何变化。最新 git 提交 d7e18759 仅为日志更新，无代码修复。System 6 个失败原因不变，coder 尚未推送修复。Docker 容器已稳定运行 3 天。浏览器工具未运行，需重启 Gateway。
 
 **待修复问题 (通知 qclaw-coder):**
 
