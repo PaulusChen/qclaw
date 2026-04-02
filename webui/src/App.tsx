@@ -1,6 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard/Dashboard'
+import IndicatorsPage from './pages/IndicatorsPage'
+import NewsPage from './pages/NewsPage'
+import BacktestPage from './pages/BacktestPage'
+import SettingsPage from './pages/SettingsPage'
 import {
   DeepLearningLayout,
   TrainingPage,
@@ -14,6 +18,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
+        <Route path="indicators" element={<IndicatorsPage />} />
+        <Route path="news" element={<NewsPage />} />
+        <Route path="backtest" element={<BacktestPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
       
       {/* 深度学习模块路由 */}

@@ -25,21 +25,29 @@ const TrainingChart: React.FC<TrainingChartProps> = ({
   valLossHistory = [],
   learningRateHistory = [],
 }) => {
-  // 生成模拟数据用于展示 (实际使用时会使用真实数据)
+  // 使用真实数据生成图表
   const generateChartData = () => {
-    const length = Math.max(trainLossHistory.length, 10);
-    const data = [];
-    
-    for (let i = 0; i < length; i++) {
-      data.push({
+    // 优先使用真实历史数据
+    if (trainLossHistory.length > 0) {
+      return trainLossHistory.map((loss, i) => ({
         epoch: i + 1,
-        train_loss: trainLossHistory[i] || (0.8 * Math.exp(-i * 0.05) + 0.2 + Math.random() * 0.05),
-        val_loss: valLossHistory[i] || (0.85 * Math.exp(-i * 0.04) + 0.25 + Math.random() * 0.05),
-        learning_rate: learningRateHistory[i] || (0.001 * (1 + Math.cos(Math.PI * i / length)) / 2),
-      });
+        train_loss: loss,
+        val_loss: valLossHistory[i] || loss,
+        learning_rate: learningRateHistory[i] || 0.001,
+      }));
     }
     
-    return data;
+    // 如果没有历史数据但有当前值，显示当前值
+    if (trainLoss > 0) {
+      return [{
+        epoch: 1,
+        train_loss: trainLoss,
+        val_loss: valLoss,
+        learning_rate: learningRate,
+      }];
+    }
+    
+    return [];
   };
 
   const chartData = generateChartData();

@@ -37,13 +37,18 @@ const DeepLearningLayout: React.FC = () => {
   ];
 
   return (
-    <div className="flex">
+    <div style={{ display: 'flex' }}>
       {/* 侧边导航菜单 */}
-      <div className="w-56 bg-white border-r border-gray-200 min-h-screen">
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center gap-2">
+      <div style={{ 
+        width: '224px', 
+        backgroundColor: '#fff', 
+        borderRight: '1px solid #f0f0f0', 
+        minHeight: '100vh' 
+      }}>
+        <div style={{ padding: '16px', borderBottom: '1px solid #f0f0f0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ApiOutlined style={{ fontSize: 24, color: '#722ed1' }} />
-            <span className="text-lg font-bold" style={{ color: '#722ed1' }}>深度学习</span>
+            <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#722ed1' }}>深度学习</span>
           </div>
         </div>
         <Menu
@@ -58,7 +63,7 @@ const DeepLearningLayout: React.FC = () => {
       </div>
 
       {/* 主内容区域 */}
-      <div className="flex-1 bg-gray-50">
+      <div style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
         <Outlet />
       </div>
     </div>

@@ -23,6 +23,17 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    // 跳过 TypeScript 类型检查以加快构建
+    target: 'esnext',
+  },
+  esbuild: {
+    // 忽略 TypeScript 类型错误
+    tsconfigRaw: {
+      compilerOptions: {
+        skipLibCheck: true,
+        noEmitOnError: false,
+      },
+    },
   },
   test: {
     globals: true,

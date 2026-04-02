@@ -84,30 +84,43 @@ async def run_training_task(task_id: str, config: Dict[str, Any]):
         epochs = config.get("epochs", 10)
         
         for epoch in range(epochs):
+            # 检查是否被停止
+            if training_tasks[task_id]["status"] == "stopped":
+                training_tasks[task_id]["logs"].append({
+                    "timestamp": datetime.now().isoformat(),
+                    "message": f"训练在 Epoch {epoch + 1}/{epochs} 被用户手动停止",
+                    "level": "warning"
+                })
+                return  # 退出训练循环
+            
             # 模拟训练进度
             await asyncio.sleep(0.5)  # 模拟训练时间
             
             # 记录日志
-            log_msg = f"Epoch {epoch + 1}/{epochs} - train_loss: 0.0{20 + epoch}, val_loss: 0.0{25 + epoch}"
+            log_msg = f"Epoch {epoch + 1}/{epochs} - train_loss: {0.8 - epoch * 0.05:.4f}, val_loss: {0.85 - epoch * 0.04:.4f}"
             training_tasks[task_id]["logs"].append({
                 "timestamp": datetime.now().isoformat(),
                 "message": log_msg,
                 "level": "info"
             })
             
-            # 更新指标
+            # 更新指标 (模拟真实的损失下降曲线)
+            import math
+            current_lr = config.get("learning_rate", 0.001) * (1 + math.cos(math.pi * epoch / epochs)) / 2
             training_tasks[task_id]["metrics"] = {
                 "current_epoch": epoch + 1,
-                "train_loss": 0.020 + epoch * 0.001,
-                "val_loss": 0.025 + epoch * 0.001,
-                "learning_rate": config.get("learning_rate", 0.001),
+                "train_loss": round(0.8 * math.exp(-epoch * 0.1) + 0.1 + (0.05 * math.sin(epoch / 5)), 4),
+                "val_loss": round(0.85 * math.exp(-epoch * 0.08) + 0.15 + (0.05 * math.sin(epoch / 5)), 4),
+                "learning_rate": round(current_lr, 6),
             }
+        
+        # 检查是否在最后一个 epoch 被停止
+        if training_tasks[task_id]["status"] == "stopped":
+            return
         
         # 训练完成
         training_tasks[task_id]["status"] = "completed"
         training_tasks[task_id]["completed_at"] = datetime.now().isoformat()
-        training_tasks[task_id]["metrics"]["final_train_loss"] = 0.020
-        training_tasks[task_id]["metrics"]["final_val_loss"] = 0.025
         
         # 保存模型 (模拟)
         model_path = MODEL_DIR / f"model_{task_id}.pt"

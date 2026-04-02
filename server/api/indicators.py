@@ -9,7 +9,7 @@ from datetime import datetime
 import logging
 
 from config.settings import settings
-from server.services import akshare_service, cache_service
+from services import akshare_service, cache_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Form,
+  Input,
   InputNumber,
   Select,
   Checkbox,
@@ -99,6 +100,9 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
   });
   const [logs, setLogs] = useState<Array<{ timestamp: string; message: string }>>([]);
   const [taskId, setTaskId] = useState<string | null>(null);
+  const [trainLossHistory, setTrainLossHistory] = useState<number[]>([]);
+  const [valLossHistory, setValLossHistory] = useState<number[]>([]);
+  const [learningRateHistory, setLearningRateHistory] = useState<number[]>([]);
   const wsRef = useRef<WebSocket | null>(null);
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -130,17 +134,29 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
           const status = await trainingApi.getTrainingStatus(taskId);
           setCurrentEpoch(status.progress.current_epoch);
           setTotalEpochs(status.progress.total_epochs);
+          
+          const newTrainLoss = status.metrics.train_loss || 0;
+          const newValLoss = status.metrics.val_loss || 0;
+          const newLearningRate = status.metrics.learning_rate || 0.001;
+          
           setMetrics({
-            train_loss: status.metrics.train_loss,
-            val_loss: status.metrics.val_loss,
-            learning_rate: status.metrics.learning_rate || 0.001,
+            train_loss: newTrainLoss,
+            val_loss: newValLoss,
+            learning_rate: newLearningRate,
           });
           
-          if (status.status !== 'running') {
+          // 更新历史数据用于图表
+          setTrainLossHistory(prev => [...prev, newTrainLoss]);
+          setValLossHistory(prev => [...prev, newValLoss]);
+          setLearningRateHistory(prev => [...prev, newLearningRate]);
+          
+          // 检查训练状态变化
+          if (status.status === 'stopped' || status.status === 'completed' || status.status === 'error') {
             setTrainingStatus(status.status);
             if (pollIntervalRef.current) {
               clearInterval(pollIntervalRef.current);
             }
+            antMessage.info(`训练已${status.status === 'stopped' ? '停止' : status.status === 'completed' ? '完成' : '失败'}`);
           }
         } catch (error) {
           console.error('Failed to poll training status:', error);
@@ -202,20 +218,17 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
     
     try {
       await trainingApi.stopTraining(taskId);
-      setTrainingStatus('completed');
-      antMessage.success('训练已停止');
+      antMessage.success('停止请求已发送，等待服务器确认...');
       
       setLogs((prev) => [
         ...prev,
         {
           timestamp: new Date().toLocaleTimeString(),
-          message: '训练已手动停止',
+          message: '用户请求停止训练',
         },
       ]);
       
-      if (pollIntervalRef.current) {
-        clearInterval(pollIntervalRef.current);
-      }
+      // 继续轮询直到服务器确认停止
     } catch (error: any) {
       console.error('Failed to stop training:', error);
       antMessage.error('停止训练失败');
@@ -493,6 +506,9 @@ const TrainingPage: React.FC<TrainingPageProps> = ({ initialConfig }) => {
                 valLoss={metrics.val_loss}
                 learningRate={metrics.learning_rate}
                 status={trainingStatus}
+                trainLossHistory={trainLossHistory}
+                valLossHistory={valLossHistory}
+                learningRateHistory={learningRateHistory}
               />
             </Card>
 

@@ -7,8 +7,8 @@ from typing import Optional, List
 from fastapi import APIRouter, HTTPException, Depends, status
 from pydantic import BaseModel
 
-from server.database import get_db_context, User, DashboardConfig
-from server.api.auth import get_current_user
+from database import get_db_context, User, DashboardConfig
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/api/dashboard", tags=["仪表盘配置"])
 
