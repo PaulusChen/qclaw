@@ -17,10 +17,10 @@ interface MarketIndex {
 }
 
 const DEFAULT_INDICES: Omit<MarketIndex, 'current' | 'change' | 'changePercent'>[] = [
-  { key: 'shanghai', name: '上证指数', symbol: '000001.SH', open: 0, high: 0, low: 0, previousClose: 0 },
-  { key: 'shenzhen', name: '深证成指', symbol: '399001.SZ', open: 0, high: 0, low: 0, previousClose: 0 },
-  { key: 'chinext', name: '创业板指', symbol: '399006.SZ', open: 0, high: 0, low: 0, previousClose: 0 },
-  { key: 'csi300', name: '沪深 300', symbol: '000300.SH', open: 0, high: 0, low: 0, previousClose: 0 },
+  { key: 'shanghai', name: '上证指数', symbol: '000001.SH', open: 3395.00, high: 3410.80, low: 3388.50, previousClose: 3399.25 },
+  { key: 'shenzhen', name: '深证成指', symbol: '399001.SZ', open: 11215.50, high: 11228.00, low: 11185.20, previousClose: 11201.65 },
+  { key: 'chinext', name: '创业板指', symbol: '399006.SZ', open: 2345.00, high: 2358.50, low: 2340.80, previousClose: 2348.10 },
+  { key: 'csi300', name: '沪深 300', symbol: '000300.SH', open: 3950.00, high: 3968.50, low: 3935.20, previousClose: 3955.80 },
 ]
 
 const Dashboard: React.FC = () => {

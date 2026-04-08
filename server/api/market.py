@@ -20,34 +20,46 @@ async def get_market_indices() -> Dict[str, Any]:
     """
     try:
         # TODO: 接入真实数据源 (AKShare/yfinance)
-        # 当前使用模拟数据
+        # 当前使用模拟数据（包含完整的 OHLC 数据）
         return {
             "timestamp": datetime.now().isoformat(),
             "indices": {
                 "shanghai": {
                     "name": "上证指数",
                     "code": "000001",
-                    "value": 3400.50,
+                    "current": 3400.50,
                     "change": 1.25,
                     "changePercent": 0.37,
+                    "open": 3395.00,
+                    "high": 3410.80,
+                    "low": 3388.50,
+                    "previousClose": 3399.25,
                     "volume": 285000000000,
                     "turnover": 320000000000
                 },
                 "shenzhen": {
                     "name": "深证成指",
                     "code": "399001",
-                    "value": 11200.80,
+                    "current": 11200.80,
                     "change": -0.85,
                     "changePercent": -0.08,
+                    "open": 11215.50,
+                    "high": 11228.00,
+                    "low": 11185.20,
+                    "previousClose": 11201.65,
                     "volume": 350000000000,
                     "turnover": 450000000000
                 },
                 "chinext": {
                     "name": "创业板指",
                     "code": "399006",
-                    "value": 2350.20,
+                    "current": 2350.20,
                     "change": 2.10,
                     "changePercent": 0.09,
+                    "open": 2345.00,
+                    "high": 2358.50,
+                    "low": 2340.80,
+                    "previousClose": 2348.10,
                     "volume": 120000000000,
                     "turnover": 180000000000
                 }
